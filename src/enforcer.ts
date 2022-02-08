@@ -1,8 +1,6 @@
-import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios'
-import { parseResponse } from 'jweb-response-parser'
-
-const domainsUrl: string = 'https://s-platform.api.opendns.com/1.0/domains'
-const eventsUrl: string = 'https://s-platform.api.opendns.com/1.0/events'
+import axios, { AxiosRequestConfig } from 'axios'
+import { parseResponse } from '@jweb-development/response-parser'
+import { CISCO_API } from './config'
 
 interface ICiscoEvent {
   alertTime: string | Date;
@@ -44,7 +42,7 @@ const getDomains = async (enforcementKey: string): Promise<IDomainPromise> => {
   try {
     const options: AxiosRequestConfig = {
       method: 'get',
-      url: domainsUrl,
+      url: CISCO_API.DOMAINS,
       responseType: 'json',
       params: {
         customerKey: enforcementKey
@@ -98,7 +96,7 @@ const submitDomains = async (enforcementKey: string, domains: Array<IDomain>, pr
 
     const options: AxiosRequestConfig = {
       method: 'post',
-      url: eventsUrl,
+      url: CISCO_API.EVENTS,
       params: {
         customerKey: enforcementKey
       },
@@ -121,7 +119,7 @@ const submitDomains = async (enforcementKey: string, domains: Array<IDomain>, pr
 
 const deleteDomain = async (enforcementKey: string, domainID: number | string) => {
   try {
-    const path = domainsUrl + `/${domainID}`
+    const path = CISCO_API.DOMAINS + `/${domainID}`
     const options: AxiosRequestConfig = {
       method: 'delete',
       url: path,
