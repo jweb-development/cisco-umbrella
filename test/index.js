@@ -71,31 +71,31 @@ const testOrganizationGet = async () => {
   }
 }
 
-// describe('Test Enforcement API', () => {
-//   describe('Testing Domain Acquisition', () => {
-//     it('Should return all domains for a given enforcement key', async () => {
-//       const CiscoDomains = await testDomainGet()
+describe('Test Enforcement API', () => {
+  describe('Testing Domain Acquisition', () => {
+    it('Should return all domains for a given enforcement key', async () => {
+      const CiscoDomains = await testDomainGet()
 
-//       assert.strictEqual(typeof CiscoDomains === 'object', true, 'Assets Cisco Domains is an object meaning successful request.')
-//       assert.strictEqual(CiscoDomains.hasOwnProperty('ciscoData'), true, 'Check Cisco Domains object for property ciscoData.')
-//       assert.strictEqual(CiscoDomains.hasOwnProperty('meta'), true, 'Check Cisco Domains object for property meta.')
-//     })
-//   })
-//   describe('Testing Domain Submission', () => {
-//     it('Should submit a new domain to Umbrella Enforcement given a key', async () => {
-//       const CiscoSubmit = await testDomainSubmit()
+      assert.strictEqual(typeof CiscoDomains === 'object', true, 'Assets Cisco Domains is an object meaning successful request.')
+      assert.strictEqual(CiscoDomains.hasOwnProperty('ciscoData'), true, 'Check Cisco Domains object for property ciscoData.')
+      assert.strictEqual(CiscoDomains.hasOwnProperty('meta'), true, 'Check Cisco Domains object for property meta.')
+    })
+  })
+  describe('Testing Domain Submission', () => {
+    it('Should submit a new domain to Umbrella Enforcement given a key', async () => {
+      const CiscoSubmit = await testDomainSubmit()
 
-//       assert.strictEqual(typeof CiscoSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
-//       assert.strictEqual(CiscoSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
-//     })
-//   })
-//   describe('Testing Domain Deletion', () => {
-//     it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
-//       const CiscoDelete = await testDomainDelete()
+      assert.strictEqual(typeof CiscoSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
+      assert.strictEqual(CiscoSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
+    })
+  })
+  describe('Testing Domain Deletion', () => {
+    it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
+      const CiscoDelete = await testDomainDelete()
 
-//       assert.strictEqual(CiscoDelete, true, 'Assert that the request did complete for deleting domain.')
-//     })
-//   })
-// })
+      assert.strictEqual(CiscoDelete, true, 'Assert that the request did complete for deleting domain.')
+    })
+  })
+})
 
-testOrganizationGet()
+// testOrganizationGet()
