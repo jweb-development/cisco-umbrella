@@ -61,17 +61,22 @@ interface IPatchDestinationList {
 }
 
 interface IDeleteDestinationList {
-  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<boolean>
+  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<boolean>;
 }
 
 interface IGetDestinationListDetails {
-  (
-    config: IUmbrellaConfig,
-    organizationID: string | number,
-    destinationListID: string | number
-  ): Promise<{ listDetails: ICiscoList, listStatus: IDestinationListsStatus }>
+  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<{
+    listDetails: ICiscoList;
+    listStatus: IDestinationListsStatus;
+  }>;
 }
 /* <========= End of: Destination Lists =========> */
+
+/* <========= Start of: Destinations =========> */
+interface IGetDestinations {
+  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<any>;
+}
+/* <========= End of: Destinations =========> */
 
 /* <========= Start of: Organizations =========> */
 interface IGetOrganizations {
@@ -111,6 +116,8 @@ export {
   ISubmitDestinationList,
   IPatchDestinationList,
   IDeleteDestinationList,
+  // Destinations
+  IGetDestinations,
   // Organizations
   IGetOrganizations,
   /* End of: functions */

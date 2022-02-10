@@ -21,7 +21,9 @@ const getDestinationLists: IGetDestinationLists = async (config, organizationID)
       throw new Error('Config is missing management keys.');
     }
 
-    if (!organizationID) { throw new Error('Organization ID not found.') }
+    if (!organizationID) {
+      throw new Error('Organization ID not found.');
+    }
 
     const path = CISCO_API.MANAGEMENT + `/organizations/${organizationID}/destinationlists`;
     const options: AxiosRequestConfig = {
@@ -60,10 +62,16 @@ const getDestinationLists: IGetDestinationLists = async (config, organizationID)
 const getDestinationListDetails: IGetDestinationListDetails = async (config, organizationID, destinationListID) => {
   try {
     const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
-    if (!mgmtKey || !mgmtSecret) { throw new Error('Config is missing management keys.'); }
+    if (!mgmtKey || !mgmtSecret) {
+      throw new Error('Config is missing management keys.');
+    }
 
-    if (!organizationID) { throw new Error('Organization ID not found.') }
-    if (!destinationListID) { throw new Error('Destination List ID not found.') }
+    if (!organizationID) {
+      throw new Error('Organization ID not found.');
+    }
+    if (!destinationListID) {
+      throw new Error('Destination List ID not found.');
+    }
 
     const path = CISCO_API.MANAGEMENT + `/organizations/${organizationID}/destinationlists/${destinationListID}`;
     const options: AxiosRequestConfig = {
@@ -77,22 +85,23 @@ const getDestinationListDetails: IGetDestinationListDetails = async (config, org
       auth: {
         username: mgmtKey,
         password: mgmtSecret,
-      }
-    }
+      },
+    };
 
     const response = await axios.request(options);
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse && !parsedResponse.error) {
-      const { status: listStatus, data: listDetails }: { data: ICiscoList, status: IDestinationListsStatus } = response.data;
-      return { listStatus, listDetails }
+      const { status: listStatus, data: listDetails }: { data: ICiscoList; status: IDestinationListsStatus } =
+        response.data;
+      return { listStatus, listDetails };
     }
 
     throw new Error('Failed to get destination list details.');
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 const getDestinationType = (destination: string) => {
   if (PATTERNS.IPV4.test(destination)) {
@@ -117,9 +126,13 @@ const getDestinationType = (destination: string) => {
 const submitDestinationList: ISubmitDestinationList = async (config, organizationID, destinationListInfo) => {
   try {
     const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
-    if (!mgmtKey || !mgmtSecret) { throw new Error('Config is missing management keys.'); }
+    if (!mgmtKey || !mgmtSecret) {
+      throw new Error('Config is missing management keys.');
+    }
 
-    if (!organizationID) { throw new Error('Organization ID not found.') }
+    if (!organizationID) {
+      throw new Error('Organization ID not found.');
+    }
 
     const { isDnsPolicy = false, access = 'block', name, isGlobal = false, destinations = [] } = destinationListInfo;
 
@@ -183,10 +196,16 @@ const patchDestinationList: IPatchDestinationList = async (
 ) => {
   try {
     const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
-    if (!mgmtKey || !mgmtSecret) { throw new Error('Config is missing management keys.'); }
+    if (!mgmtKey || !mgmtSecret) {
+      throw new Error('Config is missing management keys.');
+    }
 
-    if (!organizationID) { throw new Error('Organization ID not found.') }
-    if (!destinationListID) { throw new Error('Destination List ID not found.') }
+    if (!organizationID) {
+      throw new Error('Organization ID not found.');
+    }
+    if (!destinationListID) {
+      throw new Error('Destination List ID not found.');
+    }
 
     const { name = '' } = destinationListInfo;
     if (!name) {
@@ -226,10 +245,16 @@ const patchDestinationList: IPatchDestinationList = async (
 const deleteDestinationList: IDeleteDestinationList = async (config, organizationID, destinationListID) => {
   try {
     const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
-    if (!mgmtKey || !mgmtSecret) { throw new Error('Config is missing management keys.'); }
+    if (!mgmtKey || !mgmtSecret) {
+      throw new Error('Config is missing management keys.');
+    }
 
-    if (!organizationID) { throw new Error('Organization ID not found.') }
-    if (!destinationListID) { throw new Error('Destination List ID not found.') }
+    if (!organizationID) {
+      throw new Error('Organization ID not found.');
+    }
+    if (!destinationListID) {
+      throw new Error('Destination List ID not found.');
+    }
 
     const path = CISCO_API.MANAGEMENT + `/organizations/${organizationID}/destinationlists/${destinationListID}`;
     const options: AxiosRequestConfig = {
@@ -243,8 +268,8 @@ const deleteDestinationList: IDeleteDestinationList = async (config, organizatio
       auth: {
         username: mgmtKey,
         password: mgmtSecret,
-      }
-    }
+      },
+    };
 
     const response = await axios.request(options);
     const parsedResponse = parseResponse(response);
@@ -255,14 +280,14 @@ const deleteDestinationList: IDeleteDestinationList = async (config, organizatio
 
     throw new Error('Failed to delete destination list.');
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 export default {
   getDestinationLists,
   getDestinationListDetails,
   submitDestinationList,
   patchDestinationList,
-  deleteDestinationList
+  deleteDestinationList,
 };
