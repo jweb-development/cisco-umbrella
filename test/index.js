@@ -100,6 +100,24 @@ const testDestinationListGet = async () => {
   }
 }
 
+const testDestinationListDetailsGet = async () => {
+  try {
+    const CiscoOrganizations = await testOrganizationGet()
+    const [{ organizationId = '' } = {}] = CiscoOrganizations
+
+    if (!organizationId) { console.error('organization id not found'); return false }
+
+    const { destinationLists: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet()
+    if (!destinationListID) { console.error('destination list id not found'); return false }
+
+    const CiscoDestinationListDetails = await CiscoUmbrella.getDestinationListDetails(organizationId, destinationListID)
+    return CiscoDestinationListDetails
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}
+
 const testDestinationListSubmit = async () => {
   try {
     const CiscoOrganizations = await testOrganizationGet()
@@ -170,3 +188,5 @@ const testDestinationListPatch = async () => {
 //     })
 //   })
 // })
+
+testDestinationListDetailsGet()
