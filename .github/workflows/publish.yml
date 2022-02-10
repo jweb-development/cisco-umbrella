@@ -1,0 +1,9 @@
+name: Publish Package to npmjs
+on:
+  release:
+    types: [created]
+jobs:
+  call_publish_workflow:
+    uses: jweb-development/workflow-templates/.github/workflows/publish.yml@master
+    secrets:
+      PUBLISH_TOKEN: ${{secrets.PUBLISH_TOKEN}}
