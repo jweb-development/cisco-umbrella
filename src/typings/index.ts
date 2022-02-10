@@ -61,15 +61,14 @@ interface IPatchDestinationList {
 }
 
 interface IDeleteDestinationList {
-  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<boolean>
+  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<boolean>;
 }
 
 interface IGetDestinationListDetails {
-  (
-    config: IUmbrellaConfig,
-    organizationID: string | number,
-    destinationListID: string | number
-  ): Promise<{ listDetails: ICiscoList, listStatus: IDestinationListsStatus }>
+  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<{
+    listDetails: ICiscoList;
+    listStatus: IDestinationListsStatus;
+  }>;
 }
 /* <========= End of: Destination Lists =========> */
 
