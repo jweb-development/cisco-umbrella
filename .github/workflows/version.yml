@@ -1,0 +1,12 @@
+name: Test, Bump Package Version and Tag
+on:
+  pull_request:
+    branches:
+      - develop
+    types: [closed]
+jobs:
+  call_version_workflow:
+    if: github.event.pull_request.merged == true
+    uses: jweb-development/.github/workfows/publish.yml
+    with:
+      GH_TOKEN: ${{secrets.GH_TOKEN}}
