@@ -1,6 +1,6 @@
 {
   "name": "cisco-umbrella",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Package for integrating with cisco umbrella api.",
   "main": "dist/index.js",
   "scripts": {

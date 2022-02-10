@@ -32,14 +32,11 @@ class UmbrellaClient {
 
   /* <========= Start of: Enforcement =========> */
   getEnforcementDomains = () => Enforcement.getEnforcementDomains(this.config);
-
   submitEnforcementDomains = (domains: IEnforcementDomain[], providerName?: string, deviceVersion?: string) =>
     Enforcement.submitEnforcementDomains(this.config, domains, providerName, deviceVersion);
 
   deleteEnforcementDomain = (domainID: string | number) => Enforcement.deleteEnforcementDomain(this.config, domainID);
-  /* <========= End of: Enforcement =========> */
 
-  /* <========= Start of: Destination Lists =========> */
   getDestinationLists = (organizationID: string | number) =>
     DestinationLists.getDestinationLists(this.config, organizationID);
 
