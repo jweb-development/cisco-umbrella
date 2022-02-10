@@ -8,5 +8,5 @@ jobs:
   call_version_workflow:
     if: github.event.pull_request.merged == true
     uses: jweb-development/workflow-templates/.github/workfows/publish.yml@master
-    with:
+    secrets:
       GH_TOKEN: ${{secrets.GH_TOKEN}}
