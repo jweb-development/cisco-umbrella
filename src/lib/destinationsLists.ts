@@ -12,6 +12,7 @@ import {
   ICiscoList,
   ICiscoListDestination,
   IDestinationListsStatus,
+  IDestinationListsMeta,
 } from '../typings';
 
 const getDestinationLists: IGetDestinationLists = async (config, organizationID) => {
@@ -45,12 +46,12 @@ const getDestinationLists: IGetDestinationLists = async (config, organizationID)
 
     if (parsedResponse && !parsedResponse.error) {
       const {
-        status = {},
-        meta: listMeta = {},
-        data: destinationLists = [],
-      }: { status: any; meta: any; data: ICiscoList[] } = response.data;
+        status,
+        meta,
+        data = [],
+      }: { status: IDestinationListsStatus; meta: IDestinationListsMeta; data: ICiscoList[] } = response.data;
 
-      return { status, listMeta, destinationLists };
+      return { status, meta, data };
     }
 
     throw new Error('Failed to acquire destination lists.');
@@ -92,9 +93,9 @@ const getDestinationListDetails: IGetDestinationListDetails = async (config, org
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse && !parsedResponse.error) {
-      const { status: listStatus, data: listDetails }: { data: ICiscoList; status: IDestinationListsStatus } =
+      const { status, data }: { data: ICiscoList; status: IDestinationListsStatus } =
         response.data;
-      return { listStatus, listDetails };
+      return { status, data };
     }
 
     throw new Error('Failed to get destination list details.');

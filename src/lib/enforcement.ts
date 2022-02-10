@@ -30,8 +30,8 @@ const getEnforcementDomains: IGetEnforcementDomains = async (config = {}) => {
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse && !parsedResponse.error) {
-      const { data: ciscoData = [], meta = {} } = response.data;
-      return { ciscoData, meta };
+      const { data = [], meta = {} } = response.data;
+      return { data, meta };
     }
 
     throw new Error('Failed to acquire domains.');
@@ -64,7 +64,7 @@ const submitEnforcementDomains: ISubmitEnforcementDomains = async (
       throw new Error('Config is missing enforcement key.');
     }
 
-    const { ciscoData } = await getEnforcementDomains(config);
+    const { data: ciscoData } = await getEnforcementDomains(config);
 
     const newDomains = domains.reduce((arr: IEnforcementEvent[], domainInfo: IEnforcementDomain) => {
       if (domainInfo && domainInfo.websiteURL) {

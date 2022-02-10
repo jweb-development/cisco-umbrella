@@ -37,8 +37,8 @@ const getDestinations: IGetDestinations = async (config, organizationID, destina
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse && !parsedResponse.error) {
-      console.log(response.data)
-      return response.data;
+      const { status = {}, meta = {}, data = [] } = response.data;
+      return { status, meta, data }
     }
 
     throw new Error('Failed to acquire destinations.');
