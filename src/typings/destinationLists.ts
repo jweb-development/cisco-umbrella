@@ -37,7 +37,7 @@ interface ICiscoList extends ICiscoListInfo {
   thirdpartyCategoryId: number;
   isMspDefault: boolean;
   markedForDeletion: boolean;
-  meta: ICiscoListMeta;
+  meta?: ICiscoListMeta;
 }
 
 interface ICiscoListCreate extends ICiscoListInfo {

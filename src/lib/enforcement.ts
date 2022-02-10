@@ -123,6 +123,8 @@ const deleteEnforcementDomain: IDeleteEnforcementDomains = async (config, domain
       throw new Error('Config is missing enforcement key.');
     }
 
+    if (!domainID) { throw new Error('No domain ID found.') }
+
     const path = CISCO_API.DOMAINS + `/${domainID}`;
     const options: AxiosRequestConfig = {
       method: 'delete',
