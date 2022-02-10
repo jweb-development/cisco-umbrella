@@ -30,9 +30,9 @@ interface ICiscoListDestination {
 }
 
 interface ICiscoList extends ICiscoListInfo {
-  createdAt: number;
+  createdAt: number | string;
   id: number;
-  modifiedAt: number;
+  modifiedAt: number | string;
   organizationId: number | string;
   thirdpartyCategoryId: number;
   isMspDefault: boolean;
@@ -47,8 +47,8 @@ interface ICiscoListCreate extends ICiscoListInfo {
 
 interface ICiscoListPromise {
   status: IDestinationListsStatus;
-  listMeta: IDestinationListsMeta;
-  destinationLists: ICiscoList[];
+  meta: IDestinationListsMeta;
+  data: ICiscoList[];
 }
 
 interface IDestinationListName {

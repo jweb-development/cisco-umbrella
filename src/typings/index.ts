@@ -18,6 +18,12 @@ import {
   IDestinationListName,
 } from './destinationLists';
 
+import {
+  IDestination,
+  IDestinationMeta,
+  IDestinationStatus
+} from './destinations'
+
 import { IUmbrellaConfig } from './umbrella';
 
 import { ICiscoOrganization } from './organizations';
@@ -61,21 +67,38 @@ interface IPatchDestinationList {
 }
 
 interface IDeleteDestinationList {
-  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<boolean>;
+  (
+    config: IUmbrellaConfig,
+    organizationID: string | number,
+    destinationListID: string | number
+  ): Promise<boolean>;
 }
 
 interface IGetDestinationListDetails {
-  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<{
-    listDetails: ICiscoList;
-    listStatus: IDestinationListsStatus;
+  (
+    config: IUmbrellaConfig,
+    organizationID: string | number,
+    destinationListID: string | number
+  ): Promise<{
+    data: ICiscoList;
+    status: IDestinationListsStatus;
   }>;
 }
 /* <========= End of: Destination Lists =========> */
 
 /* <========= Start of: Destinations =========> */
 interface IGetDestinations {
-  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<any>;
+  (
+    config: IUmbrellaConfig,
+    organizationID: string | number,
+    destinationListID: string | number
+  ): Promise<{
+    status: IDestinationStatus,
+    meta: IDestinationMeta,
+    data: IDestination[]
+  }>;
 }
+
 /* <========= End of: Destinations =========> */
 
 /* <========= Start of: Organizations =========> */

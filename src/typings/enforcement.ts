@@ -30,7 +30,7 @@ interface ICiscoEnforcementMeta {
 }
 
 interface IEnforcementDomainPromise {
-  ciscoData: ICiscoEnforcementDomain[];
+  data: ICiscoEnforcementDomain[];
   meta: ICiscoEnforcementMeta;
 }
 
