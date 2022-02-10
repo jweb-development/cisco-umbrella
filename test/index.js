@@ -1,16 +1,30 @@
-const CiscoUmbrella = require('../dist')
+const { UmbrellaClient } = require('../dist')
 const { assert } = require('chai')
 
 require('dotenv').config()
 
-const EnforcementKey = process.env.CISCO_ENFORCEMENT_KEY || ''
-const ManagementKey = process.env.CISCO_MANAGEMENT_KEY || ''
-const ManagementSecret = process.env.CISCO_MANAGEMENT_SECRET || ''
+const ciscoConfig = {
+  MANAGEMENT: {
+    key: process.env.CISCO_MANAGEMENT_KEY || '',
+    secret: process.env.CISCO_MANAGEMENT_SECRET || ''
+  },
+  NETWORKING: {
+    key: process.env.CISCO_NETWORKING_KEY || '',
+    secret: process.env.CISCO_NETWORKING_SECRET || ''
+  },
+  ENFORCEMENT: {
+    key: process.env.CISCO_ENFORCEMENT_KEY || ''
+  }
+}
 
-const testDomainGet = async () => {
+const CiscoUmbrella = new UmbrellaClient(ciscoConfig)
+
+// const CiscoUmbrella = 
+
+const testEnforcementDomainGet = async () => {
   try {
     // console.log('Acquiring domains on: ', EnforcementKey)
-    const umbrellaDomains = await CiscoUmbrella.getDomains(EnforcementKey)
+    const umbrellaDomains = await CiscoUmbrella.getEnforcementDomains()
 
     return umbrellaDomains
   } catch (err) {
@@ -19,10 +33,9 @@ const testDomainGet = async () => {
   }
 }
 
-const testDomainSubmit = async () => {
+const testEnforcementDomainSubmit = async () => {
   try {
-    const submitResponse = await CiscoUmbrella.submitDomains(
-      EnforcementKey,
+    const submitResponse = await CiscoUmbrella.submitEnforcementDomains(
       [
         {
           websiteURL: 'https://www.urbandictionary.com/define.php?term=NFT&defid=16959657',
@@ -41,15 +54,15 @@ const testDomainSubmit = async () => {
   }
 }
 
-const testDomainDelete = async () => {
+const testEnforcementDomainDelete = async () => {
   try {
-    const { ciscoData } = await testDomainGet()
+    const { ciscoData } = await testEnforcementDomainGet()
     // console.log('Acquired initial domains:\n', JSON.stringify(ciscoData, null, 2))
 
     if (ciscoData && Boolean(ciscoData.length) && ciscoData.length > 1) {
-      const [{ id }] = ciscoData
+      const [{ id: domainID }] = ciscoData
       // console.log('Deleting domainID: ', id)
-      await CiscoUmbrella.deleteDomain(EnforcementKey, id)
+      await CiscoUmbrella.deleteEnforcementDomain(domainID)
 
       return true
 
@@ -64,38 +77,96 @@ const testDomainDelete = async () => {
 
 const testOrganizationGet = async () => {
   try {
-    await CiscoUmbrella.getOrganizations(ManagementKey, ManagementSecret)
+    const CiscoOrganizations = await CiscoUmbrella.getOrganizations()
+    return CiscoOrganizations
   } catch (err) {
     console.error(err)
     return false
   }
 }
 
-describe('Test Enforcement API', () => {
-  describe('Testing Domain Acquisition', () => {
-    it('Should return all domains for a given enforcement key', async () => {
-      const CiscoDomains = await testDomainGet()
+const testDestinationListGet = async () => {
+  try {
+    const CiscoOrganizations = await testOrganizationGet()
+    const [{ organizationId = '' } = {}] = CiscoOrganizations
 
-      assert.strictEqual(typeof CiscoDomains === 'object', true, 'Assets Cisco Domains is an object meaning successful request.')
-      assert.strictEqual(CiscoDomains.hasOwnProperty('ciscoData'), true, 'Check Cisco Domains object for property ciscoData.')
-      assert.strictEqual(CiscoDomains.hasOwnProperty('meta'), true, 'Check Cisco Domains object for property meta.')
+    if (!organizationId) { console.error('organization id not found'); return false }
+
+    const CiscoDestinationLists = await CiscoUmbrella.getDestinationLists(organizationId)
+    return CiscoDestinationLists
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}
+
+const testDestinationListSubmit = async () => {
+  try {
+    const CiscoOrganizations = await testOrganizationGet()
+    const [{ organizationId } = {}] = CiscoOrganizations
+
+    if (!organizationId) { console.error('organization id not found'); return false }
+
+    const CiscoListSubmit = await CiscoUmbrella.submitDestinationList(organizationId, {
+      isDnsPolicy: false,
+      access: 'block',
+      name: 'Bad Stuff',
+      isGlobal: false,
+      destinations: [
+        {
+          comment: 'This is bad',
+          destination: 'https://urbandictionary.com'
+        }
+      ]
     })
-  })
-  describe('Testing Domain Submission', () => {
-    it('Should submit a new domain to Umbrella Enforcement given a key', async () => {
-      const CiscoSubmit = await testDomainSubmit()
 
-      assert.strictEqual(typeof CiscoSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
-      assert.strictEqual(CiscoSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
-    })
-  })
-  describe('Testing Domain Deletion', () => {
-    it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
-      const CiscoDelete = await testDomainDelete()
+    return CiscoListSubmit
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}
 
-      assert.strictEqual(CiscoDelete, true, 'Assert that the request did complete for deleting domain.')
-    })
-  })
-})
+const testDestinationListPatch = async () => {
+  try {
+    const CiscoOrganizations = await testOrganizationGet()
+    const [{ organizationId } = {}] = CiscoOrganizations
 
-// testOrganizationGet()
+    if (!organizationId) { console.error('organization id not found'); return false }
+
+    const { destinationLists: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet()
+    if (!destinationListID) { console.error('destination list id not found'); return false }
+
+    const CiscoListPatch = await CiscoUmbrella.patchDestinationList(organizationId, destinationListID, { name: 'Patch test' })
+    return CiscoListPatch
+  } catch (err) {
+    throw err
+  }
+}
+
+// describe('Test Enforcement API', () => {
+//   describe('Testing Domain Acquisition', () => {
+//     it('Should return all domains for a given enforcement key', async () => {
+//       const CiscoDomains = await testDomainGet()
+
+//       assert.strictEqual(typeof CiscoDomains === 'object', true, 'Assets Cisco Domains is an object meaning successful request.')
+//       assert.strictEqual(CiscoDomains.hasOwnProperty('ciscoData'), true, 'Check Cisco Domains object for property ciscoData.')
+//       assert.strictEqual(CiscoDomains.hasOwnProperty('meta'), true, 'Check Cisco Domains object for property meta.')
+//     })
+//   })
+//   describe('Testing Domain Submission', () => {
+//     it('Should submit a new domain to Umbrella Enforcement given a key', async () => {
+//       const CiscoSubmit = await testDomainSubmit()
+
+//       assert.strictEqual(typeof CiscoSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
+//       assert.strictEqual(CiscoSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
+//     })
+//   })
+//   describe('Testing Domain Deletion', () => {
+//     it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
+//       const CiscoDelete = await testDomainDelete()
+
+//       assert.strictEqual(CiscoDelete, true, 'Assert that the request did complete for deleting domain.')
+//     })
+//   })
+// })

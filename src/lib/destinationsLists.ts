@@ -1,0 +1,187 @@
+import axios, { AxiosRequestConfig } from 'axios';
+import { parseResponse } from '@jweb-development/response-parser';
+import { CISCO_API } from '../config';
+import { PATTERNS } from '../utils';
+
+import {
+  IGetDestinationLists,
+  ISubmitDestinationList,
+  IPatchDestinationList,
+  ICiscoList,
+  ICiscoListDestination,
+} from '../typings';
+
+const getDestinationLists: IGetDestinationLists = async (config, organizationID) => {
+  try {
+    const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
+    if (!mgmtKey || !mgmtSecret) {
+      throw new Error('Config is missing management keys.');
+    }
+
+    const path = CISCO_API.MANAGEMENT + `/organizations/${organizationID}/destinationlists`;
+    const options: AxiosRequestConfig = {
+      method: 'get',
+      url: path,
+      responseType: 'json',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      auth: {
+        username: mgmtKey,
+        password: mgmtSecret,
+      },
+    };
+
+    const response = await axios.request(options);
+    const parsedResponse = parseResponse(response);
+
+    if (parsedResponse && !parsedResponse.error) {
+      const {
+        status = {},
+        meta: listMeta = {},
+        data: destinationLists = [],
+      }: { status: any; meta: any; data: ICiscoList[] } = response.data;
+
+      return { status, listMeta, destinationLists };
+    }
+
+    throw new Error('Failed to acquire destination lists.');
+  } catch (err) {
+    throw err;
+  }
+};
+
+const getDestinationType = (destination: string) => {
+  if (PATTERNS.IPV4.test(destination)) {
+    return { destinationType: 'IPV4', destination };
+  }
+
+  try {
+    const { hostname = '' } = new URL(destination);
+
+    const domain = hostname.toLowerCase().replace('www.', '');
+
+    if (Boolean(domain.localeCompare(destination.toLowerCase().replace('www.', '')) === 0)) {
+      return { destinationType: 'DOMAIN', destination: domain };
+    } else {
+      return { destinationType: 'URL', destination };
+    }
+  } catch (err) {
+    return { destinationType: 'URL', destination };
+  }
+};
+
+const submitDestinationList: ISubmitDestinationList = async (config, organizationID, destinationListInfo) => {
+  try {
+    const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
+    if (!mgmtKey || !mgmtSecret) {
+      throw new Error('Config is missing management keys.');
+    }
+
+    const { isDnsPolicy = false, access = 'block', name, isGlobal = false, destinations = [] } = destinationListInfo;
+
+    const listDestinations = destinations.reduce((arr: ICiscoListDestination[], destinationInfo) => {
+      if (destinationInfo && destinationInfo.destination) {
+        const { comment = '' } = destinationInfo;
+        const { destination, destinationType } = getDestinationType(destinationInfo.destination);
+
+        arr.push({
+          comment: comment.substring(0, 256),
+          destination,
+          type: destinationType,
+        });
+      }
+      return arr;
+    }, []);
+
+    const payload = {
+      bundleTypeId: isDnsPolicy ? 1 : 2,
+      access,
+      name,
+      isGlobal,
+      destinations: listDestinations,
+    };
+
+    const path = CISCO_API.MANAGEMENT + `/organizations/${organizationID}/destinationlists`;
+    const options: AxiosRequestConfig = {
+      method: 'post',
+      url: path,
+      responseType: 'json',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      auth: {
+        username: mgmtKey,
+        password: mgmtSecret,
+      },
+      data: payload,
+    };
+
+    const response = await axios.request(options);
+    const parsedResponse = parseResponse(response);
+
+    if (parsedResponse && !parsedResponse.error) {
+      const newDestinationList: ICiscoList = response.data;
+      return newDestinationList;
+    }
+
+    throw new Error('Failed to submit destination list.');
+  } catch (err) {
+    throw err;
+  }
+};
+
+const patchDestinationList: IPatchDestinationList = async (
+  config,
+  organizationID,
+  destinationListID,
+  destinationListInfo,
+) => {
+  try {
+    const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
+    if (!mgmtKey || !mgmtSecret) {
+      throw new Error('Config is missing management keys.');
+    }
+
+    const { name = '' } = destinationListInfo;
+    if (!name) {
+      throw new Error('Destination list must have a name.');
+    }
+
+    const path = CISCO_API.MANAGEMENT + `/organizations/${organizationID}/destinationlists/${destinationListID}`;
+    const options: AxiosRequestConfig = {
+      method: 'patch',
+      url: path,
+      responseType: 'json',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+      auth: {
+        username: mgmtKey,
+        password: mgmtSecret,
+      },
+      data: { name },
+    };
+
+    const response = await axios.request(options);
+    const parsedResponse = parseResponse(response);
+
+    if (parsedResponse && !parsedResponse.error) {
+      const newDestinationList: ICiscoList = response.data;
+      return newDestinationList;
+    }
+
+    throw new Error('Failed to update destination list.');
+  } catch (err) {
+    throw err;
+  }
+};
+
+export default {
+  getDestinationLists,
+  submitDestinationList,
+  patchDestinationList,
+};
