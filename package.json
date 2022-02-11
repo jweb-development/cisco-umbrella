@@ -1,5 +1,5 @@
 {
-  "name": "cisco-umbrella",
+  "name": "@jweb-development/cisco-umbrella",
   "version": "0.0.3",
   "description": "Package for integrating with cisco umbrella api.",
   "main": "dist/index.js",
