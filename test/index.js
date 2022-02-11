@@ -267,5 +267,3 @@ const testDestinationDelete = async () => {
 //     })
 //   })
 // })
-
-testDestinationDelete()
