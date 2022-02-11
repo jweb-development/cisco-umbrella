@@ -235,36 +235,36 @@ describe('Test Enforcement API', () => {
   describe('Testing Destination List Get', () => {
     it('Should get a given destination list from Umbrella Enforcement given a key', async () => {
       const DestinationDetails = await testDestinationListGet(globals.organizationID)
-      assert.strictEqual(typeof DestinationDetails === 'object', true, 'Should return a valid response.')
+      assert.strictEqual(typeof DestinationDetails === 'object', true, 'Assert Cisco Destination List is an object meaning succesful request.')
     })
   })
   describe('Testing Destination List Details Get', () => {
     it('Should get a given destination list from Umbrella Enforcement given a key', async () => {
       const DestinationDetails = await testDestinationListDetailsGet(globals.organizationID, globals.destinationListID)
-      assert.strictEqual(typeof DestinationDetails === 'object', true, 'Should return a valid response.')
+      assert.strictEqual(typeof DestinationDetails === 'object', true, 'Assert Cisco Destination List is an object meaning succesful request.')
     })
   })
   describe('Testing Destination List Patch', () => {
     it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
       const CiscoListPatch = await testDestinationListPatch(globals.organizationID, globals.destinationListID)
 
-      assert.strictEqual(typeof CiscoListPatch === 'object', true, 'Assert that the request returned a valid object.')
+      assert.strictEqual(typeof CiscoListPatch === 'object', true, 'Assert that the request returned a valid object meaning successful delete.')
     })
   })
   describe('Testing Destinations Get', () => {
     it('Should get a given destination from Umbrella Enforcement given a key', async () => {
       const DestinationGet = await testDestinationsGet(globals.organizationID, globals.destinationListID)
 
-      assert.strictEqual(typeof DestinationGet === 'object', true, 'Assert that the request completed.')
+      assert.strictEqual(typeof DestinationGet === 'object', true, 'Assert that the request returned a valid object meaning successful request.')
     })
   })
   describe('Testing Destination Add', () => {
     it('Should add a given destination from Umbrella Enforcement given input', async () => {
       const DestinationAdd = await testDestinationAdd(globals.organizationID, globals.destinationListID)
 
-      assert.strictEqual(typeof DestinationAdd === 'object', true, 'Assert that the request completed.')
-      assert.strictEqual(DestinationAdd.hasOwnProperty('status'), true, 'Asserts Cisco Submit ID exists for new domain.')
-      assert.strictEqual(DestinationAdd.hasOwnProperty('data'), true, 'Asserts Cisco Submit ID exists for new domain.')
+      assert.strictEqual(typeof DestinationAdd === 'object', true, 'Assert that the request returned a valid object meaning destination added successfully')
+      assert.strictEqual(DestinationAdd.hasOwnProperty('status'), true, 'Check Cisco Destination has a status property.')
+      assert.strictEqual(DestinationAdd.hasOwnProperty('data'), true, 'Check Cisco Destination has a data property.')
       assert.isNotNull(DestinationAdd.data.id, true, 'Asserts Cisco Destination Submit ID exists for new domain.')
       globals.destinationID = DestinationAdd.data.id
     })
