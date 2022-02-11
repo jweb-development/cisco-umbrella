@@ -123,6 +123,8 @@ export const deleteDestinations: IDeleteDestinations = async (config, organizati
       throw new Error('Destination List ID not found.');
     }
 
+    const newDestinations: number[] = destinations.map((destinationID) => typeof destinationID === 'string' ? parseInt(destinationID) : destinationID)
+
     const path =
       CISCO_API.MANAGEMENT + `/organizations/${organizationID}/destinationlists/${destinationListID}/destinations/remove`;
     const options: AxiosRequestConfig = {
@@ -137,7 +139,7 @@ export const deleteDestinations: IDeleteDestinations = async (config, organizati
         username: mgmtKey,
         password: mgmtSecret,
       },
-      data: destinations,
+      data: newDestinations,
     };
 
     const response = await axios.request(options);
