@@ -24,9 +24,8 @@ const CiscoUmbrella = new UmbrellaClient(ciscoConfig)
 const testEnforcementDomainGet = async () => {
   try {
     // console.log('Acquiring domains on: ', EnforcementKey)
-    const umbrellaDomains = await CiscoUmbrella.getEnforcementDomains()
-
-    return umbrellaDomains
+    const { data, meta } = await CiscoUmbrella.getEnforcementDomains()
+    return { data, meta }
   } catch (err) {
     console.error(err)
     return false
@@ -56,8 +55,11 @@ const testEnforcementDomainSubmit = async () => {
 
 const testEnforcementDomainDelete = async () => {
   try {
-    const { ciscoData } = await testEnforcementDomainGet()
+    const CiscoDomains = await testEnforcementDomainGet()
+    if (!CiscoDomains) { console.error('Failed to get domains'); return false }
     // console.log('Acquired initial domains:\n', JSON.stringify(ciscoData, null, 2))
+
+    const { data: ciscoData } = CiscoDomains
 
     if (ciscoData && Boolean(ciscoData.length) && ciscoData.length > 1) {
       const [{ id: domainID }] = ciscoData
@@ -85,14 +87,19 @@ const testOrganizationGet = async () => {
   }
 }
 
-const testDestinationListGet = async () => {
+const testDestinationListGet = async (orgID = '') => {
   try {
-    const CiscoOrganizations = await testOrganizationGet()
-    const [{ organizationId = '' } = {}] = CiscoOrganizations
+    let organizationID = ''
 
-    if (!organizationId) { console.error('organization id not found'); return false }
+    if (orgID) {
+      organizationID = orgID
+    } else {
+      const [{ organizationId: ciscoOrgID = '' } = {}] = await testOrganizationGet()
+      organizationID = ciscoOrgID
+    }
+    if (!organizationID) { console.error('organization id not found'); return false }
 
-    const CiscoDestinationLists = await CiscoUmbrella.getDestinationLists(organizationId)
+    const CiscoDestinationLists = await CiscoUmbrella.getDestinationLists(organizationID)
     return CiscoDestinationLists
   } catch (err) {
     console.error(err)
@@ -102,15 +109,13 @@ const testDestinationListGet = async () => {
 
 const testDestinationListDetailsGet = async () => {
   try {
-    const CiscoOrganizations = await testOrganizationGet()
-    const [{ organizationId = '' } = {}] = CiscoOrganizations
+    const [{ organizationId: organizationID = '' } = {}] = await testOrganizationGet()
+    if (!organizationID) { console.error('organization id not found'); return false }
 
-    if (!organizationId) { console.error('organization id not found'); return false }
-
-    const { destinationLists: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet()
+    const { data: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet(organizationID)
     if (!destinationListID) { console.error('destination list id not found'); return false }
 
-    const CiscoDestinationListDetails = await CiscoUmbrella.getDestinationListDetails(organizationId, destinationListID)
+    const CiscoDestinationListDetails = await CiscoUmbrella.getDestinationListDetails(organizationID, destinationListID)
     return CiscoDestinationListDetails
   } catch (err) {
     console.error(err)
@@ -120,12 +125,10 @@ const testDestinationListDetailsGet = async () => {
 
 const testDestinationListSubmit = async () => {
   try {
-    const CiscoOrganizations = await testOrganizationGet()
-    const [{ organizationId } = {}] = CiscoOrganizations
+    const [{ organizationId: organizationID = '' } = {}] = await testOrganizationGet()
+    if (!organizationID) { console.error('organization id not found'); return false }
 
-    if (!organizationId) { console.error('organization id not found'); return false }
-
-    const CiscoListSubmit = await CiscoUmbrella.submitDestinationList(organizationId, {
+    const CiscoListSubmit = await CiscoUmbrella.submitDestinationList(organizationID, {
       isDnsPolicy: false,
       access: 'block',
       name: 'Bad Stuff',
@@ -147,18 +150,78 @@ const testDestinationListSubmit = async () => {
 
 const testDestinationListPatch = async () => {
   try {
-    const CiscoOrganizations = await testOrganizationGet()
-    const [{ organizationId } = {}] = CiscoOrganizations
+    const [{ organizationId: organizationID = '' } = {}] = await testOrganizationGet()
+    if (!organizationID) { console.error('organization id not found'); return false }
 
-    if (!organizationId) { console.error('organization id not found'); return false }
-
-    const { destinationLists: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet()
+    const { data: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet(organizationID)
     if (!destinationListID) { console.error('destination list id not found'); return false }
 
-    const CiscoListPatch = await CiscoUmbrella.patchDestinationList(organizationId, destinationListID, { name: 'Patch test' })
+    const CiscoListPatch = await CiscoUmbrella.patchDestinationList(organizationID, destinationListID, { name: 'Patch test' })
     return CiscoListPatch
   } catch (err) {
-    throw err
+    console.error(err)
+    return false
+  }
+}
+
+const testDestinationsGet = async () => {
+  try {
+    const [{ organizationId: organizationID = '' } = {}] = await testOrganizationGet()
+    if (!organizationID) { console.error('organization id not found'); return false }
+
+    const { data: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet(organizationID)
+    if (!destinationListID) { console.error('destination list id not found'); return false }
+
+    const { status, meta, data } = await CiscoUmbrella.getDestinations(organizationID, destinationListID)
+    return { status, meta, data }
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}
+
+const testDestinationAdd = async () => {
+  try {
+    const [{ organizationId: organizationID = '' } = {}] = await testOrganizationGet()
+    if (!organizationID) { console.error('organization id not found'); return false }
+
+    const { data: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet(organizationID)
+    if (!destinationListID) { console.error('destination list id not found'); return false }
+
+    const newDestinations = [
+      {
+        comment: 'this test is bad too',
+        destination: 'https://www.urbandictionary.com/define.php?term=farm+emo'
+      }
+    ]
+
+    const CiscoDomainAdd = await CiscoUmbrella.addDestinations(organizationID, destinationListID, newDestinations)
+    return CiscoDomainAdd
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}
+
+const testDestinationDelete = async () => {
+  try {
+    const [{ organizationId: organizationID = '' } = {}] = await testOrganizationGet()
+    if (!organizationID) { console.error('organization id not found'); return false }
+
+    const { data: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet(organizationID)
+    if (!destinationListID) { console.error('destination list id not found'); return false }
+
+    const Destinations = await testDestinationsGet()
+    if (!Destinations) { console.error('destinations not acquired'); return false }
+
+    const { data: [{ id: destinationID } = {}] } = Destinations
+    if (!destinationID) { console.error('destinationID not found.'); return false }
+
+    const DestinationDelete = await CiscoUmbrella.deleteDestinations(organizationID, destinationListID, [destinationID])
+    return DestinationDelete
+  } catch (err) {
+    console.error(err)
+    return false
   }
 }
 
@@ -168,7 +231,7 @@ const testDestinationListPatch = async () => {
 //       const CiscoDomains = await testDomainGet()
 
 //       assert.strictEqual(typeof CiscoDomains === 'object', true, 'Assets Cisco Domains is an object meaning successful request.')
-//       assert.strictEqual(CiscoDomains.hasOwnProperty('ciscoData'), true, 'Check Cisco Domains object for property ciscoData.')
+//       assert.strictEqual(CiscoDomains.hasOwnProperty('data'), true, 'Check Cisco Domains object for property ciscoData.')
 //       assert.strictEqual(CiscoDomains.hasOwnProperty('meta'), true, 'Check Cisco Domains object for property meta.')
 //     })
 //   })
@@ -188,5 +251,3 @@ const testDestinationListPatch = async () => {
 //     })
 //   })
 // })
-
-testDestinationListDetailsGet()
