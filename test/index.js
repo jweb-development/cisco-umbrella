@@ -223,13 +223,6 @@ describe('Test Enforcement API', () => {
       globals.domainID = CiscoSubmit.id
     })
   })
-  describe('Testing Domain Deletion', () => {
-    it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
-      const CiscoDelete = await testEnforcementDomainDelete(globals.domainID)
-
-      assert.strictEqual(CiscoDelete, true, 'Assert that the request did complete for deleting domain.')
-    })
-  })
   describe('Testing Destination List Submission', () => {
     it('Should successfully submit a destination list request', async () => {
       const CiscoListSubmit = await testDestinationListSubmit(globals.organizationID)
@@ -276,11 +269,18 @@ describe('Test Enforcement API', () => {
       globals.destinationID = DestinationAdd.data.id
     })
   })
-  describe('Testing Destination Deletion', () => {
-    it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
-      const DestinationDelete = await testDestinationDelete(globals.organizationID, globals.destinationListID, globals.destinationID)
+  // describe('Testing Domain Deletion', () => {
+  //   it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
+  //     const CiscoDelete = await testEnforcementDomainDelete(globals.domainID)
 
-      assert.strictEqual(DestinationDelete, true, 'Assert that the request did complete for deleting domain.')
-    })
-  })
+  //     assert.strictEqual(CiscoDelete, true, 'Assert that the request did complete for deleting domain.')
+  //   })
+  // })
+  // describe('Testing Destination Deletion', () => {
+  //   it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
+  //     const DestinationDelete = await testDestinationDelete(globals.organizationID, globals.destinationListID, globals.destinationID)
+
+  //     assert.strictEqual(DestinationDelete, true, 'Assert that the request did complete for deleting domain.')
+  //   })
+  // })
 })
