@@ -89,18 +89,17 @@ const testOrganizationGet = async () => {
 
 const testDestinationListGet = async (orgID = '') => {
   try {
-    let organizationID = ''
+    let organizationID = orgID
 
-    if (orgID) {
-      organizationID = orgID
-    } else {
+    if (!organizationID) {
       const [{ organizationId: ciscoOrgID = '' } = {}] = await testOrganizationGet()
       organizationID = ciscoOrgID
     }
+
     if (!organizationID) { console.error('organization id not found'); return false }
 
-    const CiscoDestinationLists = await CiscoUmbrella.getDestinationLists(organizationID)
-    return CiscoDestinationLists
+    const { status, meta, data } = await CiscoUmbrella.getDestinationLists(organizationID)
+    return { status, meta, data }
   } catch (err) {
     console.error(err)
     return false
@@ -164,12 +163,23 @@ const testDestinationListPatch = async () => {
   }
 }
 
-const testDestinationsGet = async () => {
+const testDestinationsGet = async (orgID = '', destination = '') => {
   try {
-    const [{ organizationId: organizationID = '' } = {}] = await testOrganizationGet()
+    let organizationID = orgID
+    let destinationListID = destination
+
+    if (!organizationID) {
+      const [{ organizationId: ciscoOrgID = '' } = {}] = await testOrganizationGet()
+      organizationID = ciscoOrgID
+    }
+
     if (!organizationID) { console.error('organization id not found'); return false }
 
-    const { data: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet(organizationID)
+    if (!destinationListID) {
+      const { data: [{ id: ciscoDestinationListID } = {}] = [] } = await testDestinationListGet(organizationID)
+      destinationListID = ciscoDestinationListID
+    }
+
     if (!destinationListID) { console.error('destination list id not found'); return false }
 
     const { status, meta, data } = await CiscoUmbrella.getDestinations(organizationID, destinationListID)
@@ -205,19 +215,25 @@ const testDestinationAdd = async () => {
 
 const testDestinationDelete = async () => {
   try {
-    const [{ organizationId: organizationID = '' } = {}] = await testOrganizationGet()
+    const Organizations = await testOrganizationGet()
+    if (!Organizations) { console.error('Failed to get organizations'); return false }
+
+    const [{ organizationId: organizationID = '' } = {}] = Organizations
     if (!organizationID) { console.error('organization id not found'); return false }
 
-    const { data: [{ id: destinationListID } = {}] = [] } = await testDestinationListGet(organizationID)
+    const DestinationLists = await testDestinationListGet(organizationID)
+    if (!DestinationLists) { console.error('Failed to get destination lists'); return false }
+
+    const { data: [{ id: destinationListID } = {}] = [] }  = DestinationLists
     if (!destinationListID) { console.error('destination list id not found'); return false }
 
-    const Destinations = await testDestinationsGet()
+    const Destinations = await testDestinationsGet(organizationID, destinationListID)
     if (!Destinations) { console.error('destinations not acquired'); return false }
 
     const { data: [{ id: destinationID } = {}] } = Destinations
     if (!destinationID) { console.error('destinationID not found.'); return false }
 
-    const DestinationDelete = await CiscoUmbrella.deleteDestinations(organizationID, destinationListID, [destinationID])
+    const DestinationDelete = await CiscoUmbrella.deleteDestinations(organizationID, destinationListID, [parseInt(destinationID)])
     return DestinationDelete
   } catch (err) {
     console.error(err)
@@ -251,3 +267,5 @@ const testDestinationDelete = async () => {
 //     })
 //   })
 // })
+
+testDestinationDelete()

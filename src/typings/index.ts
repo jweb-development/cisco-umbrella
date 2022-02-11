@@ -107,7 +107,10 @@ interface IDeleteDestinations {
     organizationID: string | number,
     destinationListID: string | number,
     destinations: number[] | string[]
-  ) : Promise<any>
+  ) : Promise<{
+    status: IDestinationStatus,
+    data: ICiscoList
+  }>
 }
 /* <========= End of: Destinations =========> */
 

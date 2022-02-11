@@ -144,8 +144,8 @@ export const deleteDestinations: IDeleteDestinations = async (config, organizati
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse && !parsedResponse.error) {
-      console.log(response.data)
-      return response.data
+      const { status, data } : { status: IDestinationStatus, data: ICiscoList } = response.data
+      return { status, data }
     } 
 
     throw new Error('Failed to delete destinations.')
