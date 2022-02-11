@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { parseResponse } from '@jweb-development/response-parser';
 import { CISCO_API } from '../config';
-import { PATTERNS } from '../utils';
+import { getDestinationType } from '../utils';
 
 import {
   IGetDestinationLists,
@@ -93,34 +93,13 @@ const getDestinationListDetails: IGetDestinationListDetails = async (config, org
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse && !parsedResponse.error) {
-      const { status, data }: { data: ICiscoList; status: IDestinationListsStatus } =
-        response.data;
+      const { status, data }: { data: ICiscoList; status: IDestinationListsStatus } = response.data;
       return { status, data };
     }
 
     throw new Error('Failed to get destination list details.');
   } catch (err) {
     throw err;
-  }
-};
-
-const getDestinationType = (destination: string) => {
-  if (PATTERNS.IPV4.test(destination)) {
-    return { destinationType: 'IPV4', destination };
-  }
-
-  try {
-    const { hostname = '' } = new URL(destination);
-
-    const domain = hostname.toLowerCase().replace('www.', '');
-
-    if (Boolean(domain.localeCompare(destination.toLowerCase().replace('www.', '')) === 0)) {
-      return { destinationType: 'DOMAIN', destination: domain };
-    } else {
-      return { destinationType: 'URL', destination };
-    }
-  } catch (err) {
-    return { destinationType: 'URL', destination };
   }
 };
 

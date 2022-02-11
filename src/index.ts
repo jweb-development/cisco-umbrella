@@ -1,5 +1,11 @@
 import { Enforcement, DestinationLists, Organizations, Destinations } from './lib';
-import { ICiscoListCreate, IDestinationListName, IEnforcementDomain, IUmbrellaConfig } from './typings';
+import {
+  ICiscoListCreate,
+  IDestinationListName,
+  IEnforcementDomain,
+  IUmbrellaConfig,
+  ICiscoListDestination,
+} from './typings';
 
 class UmbrellaClient {
   config: IUmbrellaConfig;
@@ -57,8 +63,20 @@ class UmbrellaClient {
   /* <========= End of: Destination Lists =========> */
 
   /* <========= Start of: Destinations =========> */
-  getDestinations = (organizationID: string | number, destinationListID: string | number) =>
-    Destinations.getDestinations(this.config, organizationID, destinationListID);
+  getDestinations = (organizationID: string | number, destinationListID: string | number, page = 1, limit = 100) =>
+    Destinations.getDestinations(this.config, organizationID, destinationListID, page, limit);
+
+  addDestinations = (
+    organizationID: string | number,
+    destinationListID: string | number,
+    destinations: ICiscoListDestination[],
+  ) => Destinations.addDestinations(this.config, organizationID, destinationListID, destinations);
+
+  deleteDestinations = (
+    organizationID: string | number,
+    destinationListID: string | number,
+    destinations: number[] | string [],
+  ) => Destinations.deleteDestinations(this.config, organizationID, destinationListID, destinations)
   /* <========= End of: Destinations =========> */
 
   getOrganizations = () => Organizations.getOrganizations(this.config);

@@ -18,11 +18,7 @@ import {
   IDestinationListName,
 } from './destinationLists';
 
-import {
-  IDestination,
-  IDestinationMeta,
-  IDestinationStatus
-} from './destinations'
+import { IDestination, IDestinationMeta, IDestinationStatus } from './destinations';
 
 import { IUmbrellaConfig } from './umbrella';
 
@@ -67,19 +63,11 @@ interface IPatchDestinationList {
 }
 
 interface IDeleteDestinationList {
-  (
-    config: IUmbrellaConfig,
-    organizationID: string | number,
-    destinationListID: string | number
-  ): Promise<boolean>;
+  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<boolean>;
 }
 
 interface IGetDestinationListDetails {
-  (
-    config: IUmbrellaConfig,
-    organizationID: string | number,
-    destinationListID: string | number
-  ): Promise<{
+  (config: IUmbrellaConfig, organizationID: string | number, destinationListID: string | number): Promise<{
     data: ICiscoList;
     status: IDestinationListsStatus;
   }>;
@@ -91,14 +79,36 @@ interface IGetDestinations {
   (
     config: IUmbrellaConfig,
     organizationID: string | number,
-    destinationListID: string | number
+    destinationListID: string | number,
+    page: number,
+    limit: number,
   ): Promise<{
-    status: IDestinationStatus,
-    meta: IDestinationMeta,
-    data: IDestination[]
+    status: IDestinationStatus;
+    meta: IDestinationMeta;
+    data: IDestination[];
   }>;
 }
 
+interface IAddDestinations {
+  (
+    config: IUmbrellaConfig,
+    organizationID: string | number,
+    destinationListID: string | number,
+    destinations: ICiscoListDestination[],
+  ): Promise<{
+    status: IDestinationStatus,
+    data: ICiscoList
+  }>;
+}
+
+interface IDeleteDestinations {
+  (
+    config: IUmbrellaConfig,
+    organizationID: string | number,
+    destinationListID: string | number,
+    destinations: number[] | string[]
+  ) : Promise<any>
+}
 /* <========= End of: Destinations =========> */
 
 /* <========= Start of: Organizations =========> */
@@ -126,6 +136,10 @@ export {
   ICiscoListCreate,
   ICiscoListPromise,
   IDestinationListName,
+  // Destinations
+  IDestination,
+  IDestinationMeta,
+  IDestinationStatus,
   // Organizations
   ICiscoOrganization,
   /* Start of: functions */
@@ -141,6 +155,8 @@ export {
   IDeleteDestinationList,
   // Destinations
   IGetDestinations,
+  IAddDestinations,
+  IDeleteDestinations,
   // Organizations
   IGetOrganizations,
   /* End of: functions */

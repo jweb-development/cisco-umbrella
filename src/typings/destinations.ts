@@ -17,8 +17,4 @@ interface IDestination {
   createdAt: string | number;
 }
 
-export {
-  IDestinationStatus,
-  IDestinationMeta,
-  IDestination
-}
+export { IDestinationStatus, IDestinationMeta, IDestination };

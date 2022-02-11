@@ -64,8 +64,6 @@ const submitEnforcementDomains: ISubmitEnforcementDomains = async (
       throw new Error('Config is missing enforcement key.');
     }
 
-    const { data: ciscoData } = await getEnforcementDomains(config);
-
     const newDomains = domains.reduce((arr: IEnforcementEvent[], domainInfo: IEnforcementDomain) => {
       if (domainInfo && domainInfo.websiteURL) {
         const { websiteURL, eventTime, deviceID, deviceVersion: domainDeviceVersion } = domainInfo;
@@ -73,10 +71,8 @@ const submitEnforcementDomains: ISubmitEnforcementDomains = async (
 
         const dstDomain = hostname.replace('www.', '');
         const domainEventTime = typeof eventTime === 'object' ? eventTime.toISOString() : eventTime;
-        const domainExists =
-          ciscoData.findIndex((ciscoDomain: ICiscoEnforcementDomain) => ciscoDomain.name === dstDomain) !== -1;
 
-        if (dstDomain && !domainExists) {
+        if (dstDomain) {
           arr.push({
             alertTime: new Date().toISOString(),
             deviceId: deviceID,
