@@ -106,7 +106,7 @@ interface IDeleteDestinations {
     config: IUmbrellaConfig,
     organizationID: string | number,
     destinationListID: string | number,
-    destinations: number[] | string[]
+    destinations: any[]
   ) : Promise<{
     status: IDestinationStatus,
     data: ICiscoList
