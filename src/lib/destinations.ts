@@ -1,7 +1,14 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import { parseResponse } from '@jweb-development/response-parser';
 import { CISCO_API } from '../config';
-import { IGetDestinations, ICiscoListDestination, IAddDestinations, IDestinationStatus, ICiscoList, IDeleteDestinations } from '../typings';
+import {
+  IGetDestinations,
+  ICiscoListDestination,
+  IAddDestinations,
+  IDestinationStatus,
+  ICiscoList,
+  IDeleteDestinations,
+} from '../typings';
 import { getDestinationType } from '../utils';
 
 const getDestinations: IGetDestinations = async (config, organizationID, destinationListID, page, limit) => {
@@ -98,8 +105,8 @@ const addDestinations: IAddDestinations = async (config, organizationID, destina
       const parsedResponse = parseResponse(response);
 
       if (parsedResponse && !parsedResponse.error) {
-        const { status, data }: { status: IDestinationStatus, data: ICiscoList } = response.data
-        return { status, data }
+        const { status, data }: { status: IDestinationStatus; data: ICiscoList } = response.data;
+        return { status, data };
       }
     }
 
@@ -109,7 +116,12 @@ const addDestinations: IAddDestinations = async (config, organizationID, destina
   }
 };
 
-export const deleteDestinations: IDeleteDestinations = async (config, organizationID, destinationListID, destinations) => {
+export const deleteDestinations: IDeleteDestinations = async (
+  config,
+  organizationID,
+  destinationListID,
+  destinations,
+) => {
   try {
     const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
     if (!mgmtKey || !mgmtSecret) {
@@ -123,10 +135,13 @@ export const deleteDestinations: IDeleteDestinations = async (config, organizati
       throw new Error('Destination List ID not found.');
     }
 
-    const newDestinations: number[] = destinations.map((destinationID) => typeof destinationID === 'string' ? parseInt(destinationID, 10) : destinationID)
+    const newDestinations: number[] = destinations.map((destinationID) =>
+      typeof destinationID === 'string' ? parseInt(destinationID, 10) : destinationID,
+    );
 
     const path =
-      CISCO_API.MANAGEMENT + `/organizations/${organizationID}/destinationlists/${destinationListID}/destinations/remove`;
+      CISCO_API.MANAGEMENT +
+      `/organizations/${organizationID}/destinationlists/${destinationListID}/destinations/remove`;
     const options: AxiosRequestConfig = {
       method: 'delete',
       url: path,
@@ -146,14 +161,14 @@ export const deleteDestinations: IDeleteDestinations = async (config, organizati
     const parsedResponse = parseResponse(response);
 
     if (parsedResponse && !parsedResponse.error) {
-      const { status, data } : { status: IDestinationStatus, data: ICiscoList } = response.data
-      return { status, data }
-    } 
+      const { status, data }: { status: IDestinationStatus; data: ICiscoList } = response.data;
+      return { status, data };
+    }
 
-    throw new Error('Failed to delete destinations.')
+    throw new Error('Failed to delete destinations.');
   } catch (err) {
-    throw err
+    throw err;
   }
-}
+};
 
 export default { getDestinations, addDestinations, deleteDestinations };

@@ -96,8 +96,8 @@ interface IAddDestinations {
     destinationListID: string | number,
     destinations: ICiscoListDestination[],
   ): Promise<{
-    status: IDestinationStatus,
-    data: ICiscoList
+    status: IDestinationStatus;
+    data: ICiscoList;
   }>;
 }
 
@@ -106,11 +106,11 @@ interface IDeleteDestinations {
     config: IUmbrellaConfig,
     organizationID: string | number,
     destinationListID: string | number,
-    destinations: any[]
-  ) : Promise<{
-    status: IDestinationStatus,
-    data: ICiscoList
-  }>
+    destinations: any[],
+  ): Promise<{
+    status: IDestinationStatus;
+    data: ICiscoList;
+  }>;
 }
 /* <========= End of: Destinations =========> */
 

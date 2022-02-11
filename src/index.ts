@@ -75,8 +75,8 @@ class UmbrellaClient {
   deleteDestinations = (
     organizationID: string | number,
     destinationListID: string | number,
-    destinations: number[] | string [],
-  ) => Destinations.deleteDestinations(this.config, organizationID, destinationListID, destinations)
+    destinations: number[] | string[],
+  ) => Destinations.deleteDestinations(this.config, organizationID, destinationListID, destinations);
   /* <========= End of: Destinations =========> */
 
   getOrganizations = () => Organizations.getOrganizations(this.config);
