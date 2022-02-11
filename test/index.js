@@ -188,87 +188,87 @@ const testDestinationDelete = async (organizationID, destinationListID, destinat
   }
 }
 
-describe('Test Enforcement API', () => {
-  describe('Environment Setup', () => {
-    it('Should set global variables', async () => {
-      // set org
-      const [{ organizationId: ciscoOrgID = '' } = {}] = await testOrganizationGet()
-      assert.isNotNull(ciscoOrgID, 'The request should return a valid org ID.')
-      globals.organizationID = ciscoOrgID
-      // set domain
-      const CiscoDomains = await testEnforcementDomainGet()
-      assert.strictEqual(typeof CiscoDomains === 'object', true, 'Cisco Domains is an object meaning successful request.')
-      assert.strictEqual(CiscoDomains.hasOwnProperty('data'), true, 'Check Cisco Domains object for property ciscoData.')
-      const { data: ciscoData } = CiscoDomains
-      assert.isNotNull(ciscoData.id, 'The domain id should be valid.')
-      globals.domainID = ciscoData.id
-    })
-  })
-  describe('Testing Domain Acquisition', () => {
-    it('Should return all domains for a given enforcement key', async () => {
-      const CiscoDomains = await testEnforcementDomainGet()
-      console.log(CiscoDomains)
+// describe('Test Enforcement API', () => {
+//   describe('Environment Setup', () => {
+//     it('Should set global variables', async () => {
+//       // set org
+//       const [{ organizationId: ciscoOrgID = '' } = {}] = await testOrganizationGet()
+//       assert.isNotNull(ciscoOrgID, 'The request should return a valid org ID.')
+//       globals.organizationID = ciscoOrgID
+//       // set domain
+//       const CiscoDomains = await testEnforcementDomainGet()
+//       assert.strictEqual(typeof CiscoDomains === 'object', true, 'Cisco Domains is an object meaning successful request.')
+//       assert.strictEqual(CiscoDomains.hasOwnProperty('data'), true, 'Check Cisco Domains object for property ciscoData.')
+//       const { data: ciscoData } = CiscoDomains
+//       assert.isNotNull(ciscoData.id, 'The domain id should be valid.')
+//       globals.domainID = ciscoData.id
+//     })
+//   })
+//   describe('Testing Domain Acquisition', () => {
+//     it('Should return all domains for a given enforcement key', async () => {
+//       const CiscoDomains = await testEnforcementDomainGet()
+//       console.log(CiscoDomains)
 
-      assert.strictEqual(typeof CiscoDomains === 'object', true, 'Assets Cisco Domains is an object meaning successful request.')
-      assert.strictEqual(CiscoDomains.hasOwnProperty('data'), true, 'Check Cisco Domains object for property ciscoData.')
-      assert.strictEqual(CiscoDomains.hasOwnProperty('meta'), true, 'Check Cisco Domains object for property meta.')
-    })
-  })
-  describe('Testing Domain Submission', () => {
-    it('Should submit a new domain to Umbrella Enforcement given a key', async () => {
-      const CiscoSubmit = await testEnforcementDomainSubmit()
-      console.log(CiscoSubmit)
-      assert.strictEqual(typeof CiscoSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
-      assert.strictEqual(CiscoSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
-      globals.domainID = CiscoSubmit.id
-    })
-  })
-  describe('Testing Destination List Submission', () => {
-    it('Should successfully submit a destination list request', async () => {
-      const CiscoListSubmit = await testDestinationListSubmit(globals.organizationID)
+//       assert.strictEqual(typeof CiscoDomains === 'object', true, 'Assets Cisco Domains is an object meaning successful request.')
+//       assert.strictEqual(CiscoDomains.hasOwnProperty('data'), true, 'Check Cisco Domains object for property ciscoData.')
+//       assert.strictEqual(CiscoDomains.hasOwnProperty('meta'), true, 'Check Cisco Domains object for property meta.')
+//     })
+//   })
+//   describe('Testing Domain Submission', () => {
+//     it('Should submit a new domain to Umbrella Enforcement given a key', async () => {
+//       const CiscoSubmit = await testEnforcementDomainSubmit()
+//       console.log(CiscoSubmit)
+//       assert.strictEqual(typeof CiscoSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
+//       assert.strictEqual(CiscoSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
+//       globals.domainID = CiscoSubmit.id
+//     })
+//   })
+//   describe('Testing Destination List Submission', () => {
+//     it('Should successfully submit a destination list request', async () => {
+//       const CiscoListSubmit = await testDestinationListSubmit(globals.organizationID)
 
-      assert.strictEqual(typeof CiscoListSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
-      assert.strictEqual(CiscoListSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
-      globals.destinationListID = CiscoListSubmit.id
-    })
-  })
-  describe('Testing Destination List Get', () => {
-    it('Should get a given destination list from Umbrella Enforcement given a key', async () => {
-      const DestinationDetails = await testDestinationListGet(globals.organizationID)
-      assert.strictEqual(typeof DestinationDetails === 'object', true, 'Should return a valid response.')
-    })
-  })
-  describe('Testing Destination List Details Get', () => {
-    it('Should get a given destination list from Umbrella Enforcement given a key', async () => {
-      const DestinationDetails = await testDestinationListDetailsGet(globals.organizationID, globals.destinationListID)
-      assert.strictEqual(typeof DestinationDetails === 'object', true, 'Should return a valid response.')
-    })
-  })
-  describe('Testing Destination List Patch', () => {
-    it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
-      const CiscoListPatch = await testDestinationListPatch(globals.organizationID, globals.destinationListID)
+//       assert.strictEqual(typeof CiscoListSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
+//       assert.strictEqual(CiscoListSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
+//       globals.destinationListID = CiscoListSubmit.id
+//     })
+//   })
+//   describe('Testing Destination List Get', () => {
+//     it('Should get a given destination list from Umbrella Enforcement given a key', async () => {
+//       const DestinationDetails = await testDestinationListGet(globals.organizationID)
+//       assert.strictEqual(typeof DestinationDetails === 'object', true, 'Should return a valid response.')
+//     })
+//   })
+//   describe('Testing Destination List Details Get', () => {
+//     it('Should get a given destination list from Umbrella Enforcement given a key', async () => {
+//       const DestinationDetails = await testDestinationListDetailsGet(globals.organizationID, globals.destinationListID)
+//       assert.strictEqual(typeof DestinationDetails === 'object', true, 'Should return a valid response.')
+//     })
+//   })
+//   describe('Testing Destination List Patch', () => {
+//     it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
+//       const CiscoListPatch = await testDestinationListPatch(globals.organizationID, globals.destinationListID)
 
-      assert.strictEqual(typeof CiscoListPatch === 'object', true, 'Assert that the request returned a valid object.')
-    })
-  })
-  describe('Testing Destinations Get', () => {
-    it('Should get a given destination from Umbrella Enforcement given a key', async () => {
-      const DestinationGet = await testDestinationsGet(globals.organizationID, globals.destinationListID)
+//       assert.strictEqual(typeof CiscoListPatch === 'object', true, 'Assert that the request returned a valid object.')
+//     })
+//   })
+//   describe('Testing Destinations Get', () => {
+//     it('Should get a given destination from Umbrella Enforcement given a key', async () => {
+//       const DestinationGet = await testDestinationsGet(globals.organizationID, globals.destinationListID)
 
-      assert.strictEqual(typeof DestinationGet === 'object', true, 'Assert that the request completed.')
-    })
-  })
-  describe('Testing Destination Add', () => {
-    it('Should add a given destination from Umbrella Enforcement given input', async () => {
-      const DestinationAdd = await testDestinationAdd(globals.organizationID, globals.destinationListID)
+//       assert.strictEqual(typeof DestinationGet === 'object', true, 'Assert that the request completed.')
+//     })
+//   })
+//   describe('Testing Destination Add', () => {
+//     it('Should add a given destination from Umbrella Enforcement given input', async () => {
+//       const DestinationAdd = await testDestinationAdd(globals.organizationID, globals.destinationListID)
 
-      assert.strictEqual(typeof DestinationAdd === 'object', true, 'Assert that the request completed.')
-      assert.strictEqual(DestinationAdd.hasOwnProperty('status'), true, 'Asserts Cisco Submit ID exists for new domain.')
-      assert.strictEqual(DestinationAdd.hasOwnProperty('data'), true, 'Asserts Cisco Submit ID exists for new domain.')
-      assert.isNotNull(DestinationAdd.data.id, true, 'Asserts Cisco Destination Submit ID exists for new domain.')
-      globals.destinationID = DestinationAdd.data.id
-    })
-  })
+//       assert.strictEqual(typeof DestinationAdd === 'object', true, 'Assert that the request completed.')
+//       assert.strictEqual(DestinationAdd.hasOwnProperty('status'), true, 'Asserts Cisco Submit ID exists for new domain.')
+//       assert.strictEqual(DestinationAdd.hasOwnProperty('data'), true, 'Asserts Cisco Submit ID exists for new domain.')
+//       assert.isNotNull(DestinationAdd.data.id, true, 'Asserts Cisco Destination Submit ID exists for new domain.')
+//       globals.destinationID = DestinationAdd.data.id
+//     })
+//   })
   // describe('Testing Domain Deletion', () => {
   //   it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
   //     const CiscoDelete = await testEnforcementDomainDelete(globals.domainID)
@@ -283,4 +283,4 @@ describe('Test Enforcement API', () => {
   //     assert.strictEqual(DestinationDelete, true, 'Assert that the request did complete for deleting domain.')
   //   })
   // })
-})
+// })
