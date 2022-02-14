@@ -241,14 +241,14 @@ describe('Test Enforcement API', () => {
   describe('Testing Destination List Details Get', () => {
     it('Should get a given destination list from Umbrella Enforcement given a key', async () => {
       const DestinationDetails = await testDestinationListDetailsGet(globals.organizationID, globals.destinationListID)
-      assert.strictEqual(typeof DestinationDetails === 'object', true, 'Assert Cisco Destination List is an object meaning succesful request.')
+      assert.strictEqual(typeof DestinationDetails === 'object', true, 'Assert Cisco Destination List Details is an object meaning succesful request.')
     })
   })
   describe('Testing Destination List Patch', () => {
     it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
       const CiscoListPatch = await testDestinationListPatch(globals.organizationID, globals.destinationListID)
 
-      assert.strictEqual(typeof CiscoListPatch === 'object', true, 'Assert that the request returned a valid object meaning successful delete.')
+      assert.strictEqual(typeof CiscoListPatch === 'object', true, 'Assert that the request returned a valid object meaning successful request.')
     })
   })
   describe('Testing Destinations Get', () => {
