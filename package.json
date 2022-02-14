@@ -3,6 +3,7 @@
   "version": "0.0.4",
   "description": "Package for integrating with cisco umbrella api.",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "pretest": "npm run build",
@@ -30,9 +31,14 @@
   "bugs": {
     "url": "https://github.com/jweb-development/cisco-umbrella/issues"
   },
+  "contributors": [
+    "Cesar Juarez",
+    "Jacob Chambliss"
+  ],
   "keywords": [
     "JWEB",
     "Cisco",
+    "Cisco Management",
     "Umbrella",
     "Cisco Umbrella",
     "Enforcement",
