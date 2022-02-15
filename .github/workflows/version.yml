@@ -6,14 +6,15 @@ on:
     types: [closed]
 jobs:
   unit_tests:
+    runs-on: ubuntu-latest
     name: test package
     if: github.event.pull_request.merged == true
-    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
       - with:
           node-version: '14'
+      - name: CI Tests
       - run: |
           npm ci
           npm test
