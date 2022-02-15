@@ -1,11 +1,11 @@
 # API
 
-- [UmbrellaClient]()
-    - [CiscoUmbrella.initiateUmbrella](#umbrellaclient(config):-ciscoumbrella)
+- [UmbrellaClient](#umbrellaclientconfig-ciscoumbrella)
+    - [CiscoUmbrella.initiateUmbrella](#umbrellaclientconfig-ciscoumbrella)
 
 - [Enforcement]()
-    - [CiscoUmbrella.getEnforcementDomains](#ciscoumbrella.getenforcementdomains():-enforcementdomains)
-    - [CiscoUmbrella.submitEnforcementDomains]()
+    - [CiscoUmbrella.getEnforcementDomains](#ciscoumbrellagetenforcementdomains-enforcementdomains)
+    - [CiscoUmbrella.submitEnforcementDomains](#ciscoumbrellasubmitenforcementdomainsdomains-providername-deviceversion)
     - [CiscoUmbrella.deleteEnforcementDomain]()
 
 - [Destination Lists]()
