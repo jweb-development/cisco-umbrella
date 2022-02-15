@@ -30,9 +30,12 @@ interface IGetEnforcementDomains {
 }
 
 interface ISubmitEnforcementDomains {
-  (config: IUmbrellaConfig, domains: IEnforcementDomain[], providerName?: string, deviceVersion?: string): Promise<{
-    id: number;
-  }>;
+  (
+    config: IUmbrellaConfig,
+    domains: IEnforcementDomain[],
+    providerName?: string,
+    deviceVersion?: string
+  ): Promise<{ id: number; }[]>;
 }
 
 interface IDeleteEnforcementDomains {
