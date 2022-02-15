@@ -1,3 +1,3 @@
-import { UmbrellaClient } from './lib'
+import { UmbrellaClient } from './lib';
 
-export { UmbrellaClient }
+export { UmbrellaClient };
