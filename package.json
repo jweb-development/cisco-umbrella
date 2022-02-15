@@ -24,16 +24,23 @@
     "axios": "^0.25.0",
     "dotenv": "^15.0.0"
   },
-  "respository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/jweb-development/cisco-umbrella.git"
   },
   "bugs": {
     "url": "https://github.com/jweb-development/cisco-umbrella/issues"
   },
+  "homepage": "https://github.com/jweb-development/cisco-umbrella#readme",
   "contributors": [
-    "Cesar Juarez",
-    "Jacob Chambliss"
+    {
+      "name": "Cesar Juarez",
+      "email": "cesar.juarez@jwebdevelopment.com"
+    },
+    {
+      "name": "Jacob Chambliss",
+      "email": "jacob.chambliss@jwebdevelopment.com"
+    }
   ],
   "keywords": [
     "JWEB",
