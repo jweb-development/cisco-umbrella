@@ -10,11 +10,12 @@ jobs:
     if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v2
-      - with:
+        with:
           node-version: '14'
-      - name: CI Tests
-        run: |
+      - run: |
           npm ci
           npm test
         env:
