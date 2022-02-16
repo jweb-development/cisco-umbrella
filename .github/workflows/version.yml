@@ -7,7 +7,6 @@ on:
 jobs:
   unit_tests:
     runs-on: ubuntu-latest
-    name: test package
     if: github.event.pull_request.merged == true
     steps:
       - uses: actions/checkout@v2
@@ -15,7 +14,7 @@ jobs:
       - with:
           node-version: '14'
       - name: CI Tests
-      - run: |
+        run: |
           npm ci
           npm test
         env:
@@ -26,7 +25,6 @@ jobs:
           CISCO_NETWORKING_SECRET: ${{secrets.CISCO_NETWORKING_SECRET}}
           CISCO_MANAGEMENT_ENCODED: ${{secrets.CISCO_MANAGEMENT_ENCODED}}
   call_version_workflow:
-    name: version package
     if: github.event.pull_request.merged == true
     needs: [unit_tests]
     uses: jweb-development/workflow-templates/.github/workflows/version.yml@master
