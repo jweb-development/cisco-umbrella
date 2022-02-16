@@ -207,7 +207,6 @@ describe('Test Enforcement API', () => {
       assert.strictEqual(CiscoDomains.hasOwnProperty('data'), true, 'Check Cisco Domains object for property ciscoData.')
       const { data: ciscoData } = CiscoDomains
       assert.isNotNull(ciscoData.id, 'The domain id should be valid.')
-      globals.domainID = ciscoData.id
     })
   })
   describe('Testing Domain Acquisition', () => {
@@ -221,11 +220,11 @@ describe('Test Enforcement API', () => {
   })
   describe('Testing Domain Submission', () => {
     it('Should submit a new domain to Umbrella Enforcement given a key', async () => {
-      const CiscoSubmit = await testEnforcementDomainSubmit()
-      console.log(CiscoSubmit)
-      assert.strictEqual(typeof CiscoSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
-      assert.strictEqual(CiscoSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
-      globals.domainID = CiscoSubmit.id
+      const CiscoDomainSubmit = await testEnforcementDomainSubmit()
+      // console.log(CiscoDomainSubmit)
+      assert.strictEqual(typeof CiscoDomainSubmit === 'object', true, 'Assert Cisco Submit is an object meaning succesful request.')
+      assert.strictEqual(CiscoDomainSubmit.hasOwnProperty('id'), true, 'Asserts Cisco Submit ID exists for new domain.')
+      globals.domainID = CiscoDomainSubmit.id
     })
   })
   describe('Testing Destination List Submission', () => {
@@ -285,7 +284,7 @@ describe('Test Enforcement API', () => {
   //   it('Should delete a given domain from Umbrella Enforcement given a key', async () => {
   //     const DestinationDelete = await testDestinationDelete(globals.organizationID, globals.destinationListID, globals.destinationID)
 
-  //     assert.strictEqual(DestinationDelete, true, 'Assert that the request did complete for deleting domain.')
+  //     assert.strictEqual(typeof DestinationDelete === 'object', true, 'Assert that the request did complete for deleting domain.')
   //   })
   // })
 })
