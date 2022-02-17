@@ -27,12 +27,12 @@ npm i @jweb-development/cisco-umbrella
 ```
 
 ## Use Case
-In order to integrate our current API with Cisco Umbrella's API, we had to design a library capable of managing the integration. To achieve this, the package takes data acquired from our api and 
+In order to integrate our current API with Cisco Umbrella's API, we had to design a library capable of managing the integration. To achieve this, the package takes data acquired from our api 
 
 ## Documentation
 - [API](/docs/api.md)
-- [Examples]((https://github.com/jweb-development/cisco-umbrella/tree/develop/docs/examples.md))
-- [FAQ]((https://github.com/jweb-development/cisco-umbrella/tree/develop/docs/faq.md))
+- [Examples](/docs/examples.md)
+- [FAQ](/docs/faq.md)
 
 ## Contributors
 <a href="https://github.com/jweb-development/cisco-umbrella/graphs/contributors">
