@@ -52,7 +52,7 @@ const getEnforcementDomains: IGetEnforcementDomains = async (config = {}) => {
  * @param deviceVersion - [OPTIONAL] Overwrites version for all domains.
  * @returns
  */
-const submitEnforcementDomains: ISubmitEnforcementDomains = async (
+const addEnforcementDomains: ISubmitEnforcementDomains = async (
   config,
   domains,
   providerName = '',
@@ -148,6 +148,6 @@ const deleteEnforcementDomain: IDeleteEnforcementDomains = async (config, domain
 
 export default {
   getEnforcementDomains,
-  submitEnforcementDomains,
+  addEnforcementDomains,
   deleteEnforcementDomain,
 };

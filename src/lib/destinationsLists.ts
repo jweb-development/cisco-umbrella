@@ -103,7 +103,7 @@ const getDestinationListDetails: IGetDestinationListDetails = async (config, org
   }
 };
 
-const submitDestinationList: ISubmitDestinationList = async (config, organizationID, destinationListInfo) => {
+const addDestinationList: ISubmitDestinationList = async (config, organizationID, destinationListInfo) => {
   try {
     const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
     if (!mgmtKey || !mgmtSecret) {
@@ -267,7 +267,7 @@ const deleteDestinationList: IDeleteDestinationList = async (config, organizatio
 export default {
   getDestinationLists,
   getDestinationListDetails,
-  submitDestinationList,
+  addDestinationList,
   patchDestinationList,
   deleteDestinationList,
 };

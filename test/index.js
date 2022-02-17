@@ -39,7 +39,7 @@ const testEnforcementDomainGet = async () => {
 
 const testEnforcementDomainSubmit = async () => {
   try {
-    const submitResponse = await CiscoUmbrella.submitEnforcementDomains(
+    const submitResponse = await CiscoUmbrella.addEnforcementDomains(
       [
         {
           websiteURL: 'https://www.urbandictionary.com/define.php?term=NFT&defid=16959657',
@@ -113,7 +113,7 @@ const testDestinationListSubmit = async (organizationID) => {
     let prefix = ''
     for (var i = length; i > 0; --i) prefix += chars[Math.floor(Math.random() * chars.length)]
 
-    const CiscoListSubmit = await CiscoUmbrella.submitDestinationList(organizationID, {
+    const CiscoListSubmit = await CiscoUmbrella.addDestinationList(organizationID, {
       isDnsPolicy: false,
       access: 'block',
       name: 'Bad Destination List ' + prefix,
