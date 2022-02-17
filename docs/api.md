@@ -1,28 +1,28 @@
 # API
 
 - UmbrellaClient
-    - [new UmbrellaClient]()
-    - [CiscoUmbrella.initiateUmbrella](#umbrellaclientconfig-ciscoumbrella)
+    - [new UmbrellaClient](#new-umbrellaclientconfig-ciscoumbrella)
+    - [CiscoUmbrella.initiateUmbrella](#ciscoumbrellaintiateumbrellaconfig)
 
 - Enforcement
-    - [CiscoUmbrella.getEnforcementDomains](#ciscoumbrellagetenforcementdomains-enforcementdomains)
-    - [CiscoUmbrella.addEnforcementDomains](#ciscoumbrelladdenforcementdomainsdomains-providername-deviceversion)
-    - [CiscoUmbrella.deleteEnforcementDomain]()
+    - [CiscoUmbrella.getEnforcementDomains](#ciscoumbrellagetenforcementdomains-promise)
+    - [CiscoUmbrella.addEnforcementDomains](#ciscoumbrellaaddenforcementdomainsdomains-providername-deviceversion-promise)
+    - [CiscoUmbrella.deleteEnforcementDomain](#ciscoumbrelladeleteenforcementdomaindomainid-promise)
 
 - Destination Lists
-    - [CiscoUmbrella.getDestinationLists]()
-    - [CiscoUmbrella.getDestinationListDetails]()
-    - [CiscoUmbrella.addDestinationList]()
-    - [CiscoUmbrella.patchDestinationList]()
-    - [CiscoUmbrella.deleteDestinationList]()
+    - [CiscoUmbrella.getDestinationLists](#ciscoumbrellagetdestinationlistsorganizationid-promise)
+    - [CiscoUmbrella.getDestinationListDetails](#ciscoumbrellagetdestinationlistdetailsorganizationid-destinationlistid-promise)
+    - [CiscoUmbrella.addDestinationList](#ciscoumbrellaadddestinationlistorganizationid-destinationlistinfo-promise)
+    - [CiscoUmbrella.patchDestinationList](#ciscoumbrellapatchdestinationlistorganizationid-destinationlistid-destinationlistinfo-promise)
+    - [CiscoUmbrella.deleteDestinationList](#ciscoumbrelladeletedestinationlistorganizationid-destinationlistid-promise)
 
 - Destinations
-    - [CiscoUmbrella.getDestinations]()
-    - [CiscoUmbrella.addDestinations]()
-    - [CiscoUmbrella.deleteDestinations]()
+    - [CiscoUmbrella.getDestinations](#ciscoumbrellagetdestinationsorganizationid-destinationlistid-page-limit)
+    - [CiscoUmbrella.addDestinations](#ciscoumbrellaadddestinationsorganizationid-destinationlistid-destinations-promise)
+    - [CiscoUmbrella.deleteDestinations](#ciscoumbrelladeletedestinationsorganizationid-destinationlistid-destinations-promise)
 
 - Organizations
-    - [CiscoUmbrella.getOrganizations]()
+    - [CiscoUmbrella.getOrganizations](#ciscoumbrellagetorganizations-promise)
 
 ---
 
