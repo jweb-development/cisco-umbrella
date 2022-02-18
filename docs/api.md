@@ -624,3 +624,5 @@ const Organizations = CiscoUmbrella.getOrganizations()
 - `Organizations` - Object with Organizations acquired from Cisco Umbrella.
     - `Organizations[].organizationId` - ID of organization found in Cisco Umbrella
     - `Organizations[].name` - Name of organization found in Cisco Umbrella
+
+## [Back To Top](#api)
