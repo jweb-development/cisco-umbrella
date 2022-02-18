@@ -24,7 +24,7 @@ const getEnforcementDomains: IGetEnforcementDomains = async (config = {}, page?,
       params: {
         customerKey: enforcementKey,
         page: page || 1,
-        limit: limit || 100
+        limit: limit || 100,
       },
     };
 

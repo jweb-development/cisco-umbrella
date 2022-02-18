@@ -39,10 +39,10 @@ const getDestinationLists: IGetDestinationLists = async (config, organizationID,
         username: mgmtKey,
         password: mgmtSecret,
       },
-      params:{
+      params: {
         page: page || 1,
-        limit: limit || 100
-      }
+        limit: limit || 100,
+      },
     };
 
     const response = await axios.request(options);

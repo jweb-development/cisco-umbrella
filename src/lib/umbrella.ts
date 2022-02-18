@@ -37,8 +37,7 @@ class UmbrellaClient {
   };
 
   /* <========= Start of: Enforcement =========> */
-  getEnforcementDomains = (page = 1, limit = 100) =>
-    Enforcement.getEnforcementDomains(this.config, page, limit);
+  getEnforcementDomains = (page = 1, limit = 100) => Enforcement.getEnforcementDomains(this.config, page, limit);
   addEnforcementDomains = (domains: IEnforcementDomain[], providerName?: string, deviceVersion?: string) =>
     Enforcement.addEnforcementDomains(this.config, domains, providerName, deviceVersion);
 
