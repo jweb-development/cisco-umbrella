@@ -10,7 +10,7 @@ import {
   IDeleteEnforcementDomains,
 } from '../typings';
 
-const getEnforcementDomains: IGetEnforcementDomains = async (config = {}) => {
+const getEnforcementDomains: IGetEnforcementDomains = async (config = {}, page?, limit?) => {
   try {
     const { ENFORCEMENT: { key: enforcementKey = '' } = {} } = config;
     if (!enforcementKey) {
@@ -23,6 +23,8 @@ const getEnforcementDomains: IGetEnforcementDomains = async (config = {}) => {
       responseType: 'json',
       params: {
         customerKey: enforcementKey,
+        page: page || 1,
+        limit: limit || 100
       },
     };
 
@@ -52,7 +54,7 @@ const getEnforcementDomains: IGetEnforcementDomains = async (config = {}) => {
  * @param deviceVersion - [OPTIONAL] Overwrites version for all domains.
  * @returns
  */
-const submitEnforcementDomains: ISubmitEnforcementDomains = async (
+const addEnforcementDomains: ISubmitEnforcementDomains = async (
   config,
   domains,
   providerName = '',
@@ -148,6 +150,6 @@ const deleteEnforcementDomain: IDeleteEnforcementDomains = async (config, domain
 
 export default {
   getEnforcementDomains,
-  submitEnforcementDomains,
+  addEnforcementDomains,
   deleteEnforcementDomain,
 };

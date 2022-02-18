@@ -15,7 +15,7 @@ import {
   IDestinationListsMeta,
 } from '../typings';
 
-const getDestinationLists: IGetDestinationLists = async (config, organizationID) => {
+const getDestinationLists: IGetDestinationLists = async (config, organizationID, page?, limit?) => {
   try {
     const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
     if (!mgmtKey || !mgmtSecret) {
@@ -39,6 +39,10 @@ const getDestinationLists: IGetDestinationLists = async (config, organizationID)
         username: mgmtKey,
         password: mgmtSecret,
       },
+      params:{
+        page: page || 1,
+        limit: limit || 100
+      }
     };
 
     const response = await axios.request(options);
@@ -103,7 +107,7 @@ const getDestinationListDetails: IGetDestinationListDetails = async (config, org
   }
 };
 
-const submitDestinationList: ISubmitDestinationList = async (config, organizationID, destinationListInfo) => {
+const addDestinationList: ISubmitDestinationList = async (config, organizationID, destinationListInfo) => {
   try {
     const { MANAGEMENT: { key: mgmtKey = '', secret: mgmtSecret = '' } = {} } = config;
     if (!mgmtKey || !mgmtSecret) {
@@ -267,7 +271,7 @@ const deleteDestinationList: IDeleteDestinationList = async (config, organizatio
 export default {
   getDestinationLists,
   getDestinationListDetails,
-  submitDestinationList,
+  addDestinationList,
   patchDestinationList,
   deleteDestinationList,
 };

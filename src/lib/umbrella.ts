@@ -37,20 +37,21 @@ class UmbrellaClient {
   };
 
   /* <========= Start of: Enforcement =========> */
-  getEnforcementDomains = () => Enforcement.getEnforcementDomains(this.config);
-  submitEnforcementDomains = (domains: IEnforcementDomain[], providerName?: string, deviceVersion?: string) =>
-    Enforcement.submitEnforcementDomains(this.config, domains, providerName, deviceVersion);
+  getEnforcementDomains = (page = 1, limit = 100) =>
+    Enforcement.getEnforcementDomains(this.config, page, limit);
+  addEnforcementDomains = (domains: IEnforcementDomain[], providerName?: string, deviceVersion?: string) =>
+    Enforcement.addEnforcementDomains(this.config, domains, providerName, deviceVersion);
 
   deleteEnforcementDomain = (domainID: string | number) => Enforcement.deleteEnforcementDomain(this.config, domainID);
 
-  getDestinationLists = (organizationID: string | number) =>
-    DestinationLists.getDestinationLists(this.config, organizationID);
+  getDestinationLists = (organizationID: string | number, page = 1, limit = 100) =>
+    DestinationLists.getDestinationLists(this.config, organizationID, page, limit);
 
   getDestinationListDetails = (organizationID: string | number, destinationListID: string | number) =>
     DestinationLists.getDestinationListDetails(this.config, organizationID, destinationListID);
 
-  submitDestinationList = (organizationID: string | number, destinationListInfo: ICiscoListCreate) =>
-    DestinationLists.submitDestinationList(this.config, organizationID, destinationListInfo);
+  addDestinationList = (organizationID: string | number, destinationListInfo: ICiscoListCreate) =>
+    DestinationLists.addDestinationList(this.config, organizationID, destinationListInfo);
 
   patchDestinationList = (
     organizationID: string | number,
