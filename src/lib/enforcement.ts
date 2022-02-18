@@ -10,7 +10,7 @@ import {
   IDeleteEnforcementDomains,
 } from '../typings';
 
-const getEnforcementDomains: IGetEnforcementDomains = async (config = {}) => {
+const getEnforcementDomains: IGetEnforcementDomains = async (config = {}, page?, limit?) => {
   try {
     const { ENFORCEMENT: { key: enforcementKey = '' } = {} } = config;
     if (!enforcementKey) {
@@ -23,6 +23,8 @@ const getEnforcementDomains: IGetEnforcementDomains = async (config = {}) => {
       responseType: 'json',
       params: {
         customerKey: enforcementKey,
+        page: page || 1,
+        limit: limit || 100
       },
     };
 

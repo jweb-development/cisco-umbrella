@@ -44,6 +44,7 @@
 ### Examples:
 ```js
 const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = {
     MANAGEMENT: {
         key: '',
@@ -61,7 +62,7 @@ const CiscoUmbrella = new UmbrellaClient(config)
 ```
 
 ### Returns:
-- `CiscoUmbrella`
+- `CiscoUmbrella` - class that allows the access of functions for Enforcement, Destination Lists, Destinations, and Organizaiton calls for Cisco Umbrella
 
 ---
 
@@ -83,6 +84,7 @@ const CiscoUmbrella = new UmbrellaClient(config)
 ### Examples:
 ```js
 const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const CiscoUmbrella = new UmbrellaClient({})
 
 const config = {
@@ -103,9 +105,13 @@ CiscoUmbrella.initiateUmbrella(config)
 
 ---
 
-## CiscoUmbrella.getEnforcementDomains(): Promise
+## CiscoUmbrella.getEnforcementDomains(page?, limit?): Promise
 
 `CiscoUmbrella.getEnforcementDomains` is a class function that returns information for cisco enforcement domains.
+
+### Arguments:
+- `page?` - Optional parameter for querying page for Enforcement domains
+- `limit?` - Optional parameter for querying limit for Enforcement domains
 
 ### Examples:
 ```js
@@ -114,26 +120,29 @@ const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
 const config = { ENFORCEMENT: { key: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
-const EnforcementDomains = await CiscoUmbrella.getEnforcementDomains()
+const page = 1 || null
+const limit = 100 || null
+
+const EnforcementDomains = await CiscoUmbrella.getEnforcementDomains(page, limit)
 const { data, meta } = EnforcementDomains
 ```
 
 ### Returns:
-- `data`
-    - `data[].id`
-    - `data[].name`
-    - `data[].lastSeenAt`
-- `meta`
-    - `meta.page`
-    - `meta.limit`
-    - `meta.prev`
-    - `meta.next`
+- `data` - Array of Enforcement domain information
+    - `data[].id` - ID of Enforcement domain
+    - `data[].name` - Name of Enforcement domain
+    - `data[].lastSeenAt` - Date Enforcement domain was last detected by Cisco Umbrella
+- `meta`- Object of pagination information
+    - `meta.page` - Page which Enforcement domains were acquired from
+    - `meta.limit` - Limit of how many Enforcement domains were acquired
+    - `meta.prev` - Boolean if previous pages exist
+    - `meta.next` - Boolean if more pages exist
 
 ---
 
 ## CiscoUmbrella.addEnforcementDomains(domains, providerName?, deviceVersion?): Promise
 
-`CiscoUmbrella.addEnforcementDomains` is a class function that submits new domains to cisco enforcement.
+`CiscoUmbrella.addEnforcementDomains` is a class function that submits new domains to Cisco Enforcement.
 
 ### Arguments:
 - `domains` - an array of new domains to be added to enforcement
@@ -173,9 +182,10 @@ const newDomains = await CiscoUmbrella.addEnforcementDomains(domains, providerNa
 ---
 ## CiscoUmbrella.deleteEnforcementDomain(domainID): Promise
 
-`CiscoUmbrella.deleteEnforcementDomain` is a class function that deletes a domain based on their ID from cisco enforcement domains.
+`CiscoUmbrella.deleteEnforcementDomain` is a class function that deletes a domain based on their ID from Cisco Enforcement domains.
 
 ### Arguments:
+- `domainID` - ID of Enforcement domain to be deleted
 
 ### Examples:
 ```js
@@ -190,61 +200,72 @@ const hasDeleted = await CiscoUmbrella.deleteEnforcementDomain(domainID)
 ```
 
 ### Returns:
-- `hasDeleted` - returns true if domain was deleted
+- `hasDeleted` - Returns true if domain was deleted
 
 ---
 
-## CiscoUmbrella.getDestinationLists(organizationID): Promise
+## CiscoUmbrella.getDestinationLists(organizationID, page?, limit?): Promise
 
-`CiscoUmbrella.getDestinationLists` is a class function that returns information for cisco destination lists.
+`CiscoUmbrella.getDestinationLists` is a class function that returns information for Cisco Destination Lists.
 
 ### Arguments:
-- `organizationID` - ID of organization to acquire destination lists from.
+- `organizationID` - ID of organization to acquire Destination Lists from
+- `page?` - Optional parameter for querying page for Destination Lists
+- `limit?` - Optional parameter for querying limit for Destination Lists
 
 ### Examples:
 ```js
+const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = { MANAGEMENT: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
 const organizationID = ''
 const DestinationLists = await CiscoUmbrella.getDestinationLists(organizationID)
-const { meta, status, data } = DestinationLists
 ```
 
 ### Returns:
-- `status`
-    - `status.code`
-    - `status.text`
-- `meta`
-    - `meta.page`
-    - `meta.limit`
-    - `meta.total`
-- `data`
-    - `data[].access`
-    - `data[].bundleTypeId`
-    - `data[].createdAt`
-    - `data[].id`
-    - `data[].isGlobal`
-    - `data[].modifiedAt`
-    - `data[].name`
-    - `data[].organizationId`
-    - `data[].thirdpartyCategoryId`
-    - `data[].isMspDefault`
-    - `data[].makedForDeletion`
-    - `data[].meta`
+- `DestinationLists` - Object of Destination List information acquired from Cisco Umbrella
+    - `DestinationLists.status` - Object of request information
+        - `status.code` - Code of HTTP Request (200 if successul)
+        - `status.text` - Text form HTTP REquest
+    - `DestinationLists.meta` - Object of pagination information
+        - `meta.page` - Current page Destination Lists were acquired from
+        - `meta.limit` - Current limit of Destination Lists that were acquired
+        - `meta.total` - Total number of Destination Lists 
+    - `DestinationLists.data` - Array of objects containing information for each Destination List.
+        - `data[].access` - Type of access for Destination List (allow or block)
+        - `data[].bundleTypeId` - ID corresponding to the type of policy associated with list. 1 for DnsPolicy and 2 for Web Policy.
+        - `data[].createdAt` - Unix timestamp that Destination List was created
+        - `data[].id` - ID of Destination List
+        - `data[].isGlobal` - Boolean for if list is global or organizational
+        - `data[].modifiedAt` - Unix timestamp that Destination List was modified
+        - `data[].name` - Name of Destination List
+        - `data[].organizationId` - Organization ID that Destination List belongs to
+        - `data[].thirdpartyCategoryId` - Third party Category ID for Destination List
+        - `data[].isMspDefault` - Boolean for if Destination List is managed by service provider (MSP)
+        - `data[].makedForDeletion` - Boolean for if Destination List is to be deleted
+        - `data[].meta` - Object containing information on Destination List
+            - `meta.destinationCount` - Count of total destinations in Destination List
+            - `meta.domainCount` - Count of domains in Destination List 
+            - `meta.ipv4Count` - Count of Ip addresses in Destination List
+            - `meta.urlCount` - Count fo urls in Destination List
+
 
 ---
 
 ## CiscoUmbrella.getDestinationListDetails(organizationID, destinationListID): Promise
 
-`CiscoUmbrella.getDestinationListDetails` is a class function that returns details on a cisco destination list.
+`CiscoUmbrella.getDestinationListDetails` is a class function that returns details on a Cisco Destination List.
 
 ### Arguments:
-- `organizationID`
-- `destinationListID`
+- `organizationID` - Organization ID where the Destination List was created
+- `destinationListID` - ID of the Destination List created to get details from
 
 ### Examples:
 ```js
+const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = { MANAGEMENT: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
@@ -252,44 +273,50 @@ const organizationID = ''
 const destinationListID = ''
 
 const DestinationListDetails = await CiscoUmbrella.getDestinationListDetails(organizationID, destinationListID)
-const { data, status } = DestinationListDetails
 ```
 
 ### Returns:
-- `data`
-    - `data.access`
-    - `data.bundleTypeId`
-    - `data.createdAt`
-    - `data.id`
-    - `data.isGlobal`
-    - `data.isMspDefault`
-    - `data.markedForDeletion`
-    - `data.modifiedAt`
-    - `data.name`
-    - `data.organizationId`
-    - `data.thirdpartyCategoryId`
-    - `data.meta`
-- `status`
-    - `status.code`
-    - `status.text`
+- `DestinationListDetails` - Object with information of Destination List Request
+    - `DestinationListDetails.data` - Object containing details of Destination List
+        - `data.access` - Type of access for Destination List (allow or block)
+        - `data.bundleTypeId` - ID corresponding to the type of policy associated with list. 1 for DnsPolicy and 2 for Web Policy.
+        - `data.createdAt` - Unix timestamp that Destination List was created
+        - `data.id` - ID of Destination List
+        - `data.isGlobal` - Boolean for if list is global or organizational
+        - `data.modifiedAt` - Unix timestamp that Destination List was modified
+        - `data.name` - Name of Destination List
+        - `data.organizationId` - Organization ID that Destination List belongs to
+        - `data.thirdpartyCategoryId` - Third party Category ID for Destination List
+        - `data.isMspDefault` - Boolean for if Destination List is managed by service provider (MSP)
+        - `data.makedForDeletion` - Boolean for if Destination List is to be deleted
+        - `data.meta` - Object containing information on Destination List
+            - `meta.destinationCount` - Count of total destinations in Destination List
+            - `meta.domainCount` - Count of domains in Destination List 
+            - `meta.ipv4Count` - Count of Ip addresses in Destination List
+            - `meta.urlCount` - Count fo urls in Destination List
+    - `DestinationListDetails.status` - Object containing information of HTTP Request
+        - `status.code` - Code of HTTP Request (200 if successul)
+        - `status.text` - Text form HTTP REquest
 
 ---
 
 ## CiscoUmbrella.addDestinationList(organizationID, destinationListInfo): Promise
 
-`CiscoUmbrella.addDestinationList` is a class function that creates a new destination list.
+`CiscoUmbrella.addDestinationList` is a class function that creates a new Destination List.
 
 ### Arguments:
-- `organizationID`
-- `destinationListInfo`
-    - `destinationListInfo.isDnsPolicy`
-    - `destinationListInfo.destinations`
-        - `destinations[].comment`
-        - `destinations[].destination`
+- `organizationID` - Organization ID where the Destination List was created
+- `destinationListInfo` - Object with information for creating a new Destination List
+    - `destinationListInfo.isDnsPolicy` - Boolean for if new Destination List should have a Umbrella DNS policy
+    - `destinationListInfo.destinations` -  Array of new Destinations to be added with Destination List.
+        - `destinations[].comment` - Comment for domain to be added
+        - `destinations[].destination` - New URL/domain/ip address to be added
 
 
 ### Examples:
 ```js
+const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = { MANAGEMENT: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
@@ -313,23 +340,23 @@ const newDestinationList = await CiscoUmbrella.addDestinationList(organizationID
 ```
 
 ### Returns:
-- `newDestinationList`
-    - `newDestinationList.access`
-    - `newDestinationList.bundleTypeId`
-    - `newDestinationList.createdAt`
-    - `newDestinationList.id`
-    - `newDestinationList.isGlobal`
-    - `newDestinationList.isMspDefault`
-    - `newDestinationList.markedForDeletion`
-    - `newDestinationList.modifiedAt`
-    - `newDestinationList.name`
-    - `newDestinationList.organizationId`
-    - `newDestinationList.thirdpartyCategoryId`
-    - `newDestinationList.meta`
-        - `meta.destinationCount`
-        - `meta.domainCount`
-        - `meta.ipv4Count`
-        - `meta.urlCount`
+- `newDestinationList`- Object with information on Destination List
+    - `newDestinationList.access` - Type of access for Destination List (allow or block)
+    - `newDestinationList.bundleTypeId` - ID corresponding to the type of policy associated with list. 1 for DnsPolicy and 2 for Web Policy.
+    - `newDestinationList.createdAt` - Unix timestamp that Destination List was created
+    - `newDestinationList.id` - ID of Destination List
+    - `newDestinationList.isGlobal` - Boolean for if list is global or organizational
+    - `newDestinationList.modifiedAt` - Unix timestamp that Destination List was modified
+    - `newDestinationList.name` - Name of Destination List
+    - `newDestinationList.organizationId` - Organization ID that Destination List belongs to
+    - `newDestinationList.thirdpartyCategoryId` - Third party Category ID for Destination List
+    - `newDestinationList.isMspDefault` - Boolean for if Destination List is managed by service provider (MSP)
+    - `newDestinationList.makedForDeletion` - Boolean for if Destination List is to be deleted
+    - `newDestinationList.meta` - Object containing information on Destination List
+        - `meta.destinationCount` - Count of total destinations in Destination List
+        - `meta.domainCount` - Count of domains in Destination List 
+        - `meta.ipv4Count` - Count of Ip addresses in Destination List
+        - `meta.urlCount` - Count fo urls in Destination List
 
 --- 
 
@@ -338,13 +365,15 @@ const newDestinationList = await CiscoUmbrella.addDestinationList(organizationID
 `CiscoUmbrella.patchDestinationList` is a class function for updating the name of the destination list.
 
 ### Arguments:
-- `organizationID`
-- `destinationListID`
-- `destinationListInfo`
-    - `destinationListInfo.name`
+- `organizationID` - Organization ID where the Destination List was created
+- `destinationListID` - ID of the Destination List created to update name
+- `destinationListInfo` - Object containing new information for updating Destination List
+    - `destinationListInfo.name` - New name for existing Destination List
 
 ### Examples
 ```js
+const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = { MANAGEMENT: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
@@ -356,36 +385,38 @@ const data = await CiscoUmbrella.patchDestinationList(organizationID, destinatio
 ```
 
 ### Returns:
-- `updatedDestinationList`
-    - `updatedDestinationList.access`
-    - `updatedDestinationList.bundleTypeId`
-    - `updatedDestinationList.createdAt`
-    - `updatedDestinationList.id`
-    - `updatedDestinationList.isGlobal`
-    - `updatedDestinationList.isMspDefault`
-    - `updatedDestinationList.markedForDeletion`
-    - `updatedDestinationList.modifiedAt`
-    - `updatedDestinationList.name`
-    - `updatedDestinationList.organizationId`
-    - `updatedDestinationList.thirdpartyCategoryId`
-    - `updatedDestinationList.meta`
-        - `meta.destinationCount`
-        - `meta.domainCount`
-        - `meta.ipv4Count`
-        - `meta.urlCount`
+- `updatedDestinationList` - Object with information on updated destination list
+    - `updatedDestinationList.access` - Type of access for Destination List (allow or block)
+    - `updatedDestinationList.bundleTypeId` - ID corresponding to the type of policy associated with list. 1 for DnsPolicy and 2 for Web Policy.
+    - `updatedDestinationList.createdAt` - Unix timestamp that Destination List was created
+    - `updatedDestinationList.id` - ID of Destination List
+    - `updatedDestinationList.isGlobal` - Boolean for if list is global or organizational
+    - `updatedDestinationList.modifiedAt` - Unix timestamp that Destination List was modified
+    - `updatedDestinationList.name` - Name of Destination List
+    - `updatedDestinationList.organizationId` - Organization ID that Destination List belongs to
+    - `updatedDestinationList.thirdpartyCategoryId` - Third party Category ID for Destination List
+    - `updatedDestinationList.isMspDefault` - Boolean for if Destination List is managed by service provider (MSP)
+    - `updatedDestinationList.makedForDeletion` - Boolean for if Destination List is to be deleted
+    - `updatedDestinationList.meta` - Object containing information on Destination List
+        - `meta.destinationCount` - Count of total destinations in Destination List
+        - `meta.domainCount` - Count of domains in Destination List 
+        - `meta.ipv4Count` - Count of Ip addresses in Destination List
+        - `meta.urlCount` - Count fo urls in Destination List
 
 --- 
 
 ## CiscoUmbrella.deleteDestinationList(organizationID, destinationListID): Promise
 
-`CiscoUmbrella.deleteDestinationList` is a class function that deletes a destination list given the id from cisco umbrella.
+`CiscoUmbrella.deleteDestinationList` is a class function that deletes a destination list given the id from Cisco Umbrella.
 
 ### Arguments:
-- `organizationID`
-- `destinationListID`
+- `organizationID` - Organization ID where the Destination List was created
+- `destinationListID` - ID of the Destination List to be deleted
 
 ### Examples:
 ```js
+const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = { MANAGEMENT: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
@@ -396,47 +427,50 @@ const hasDeleted = await CiscoUmbrella.deleteDestinationList(organizationID, des
 ```
 
 ### Returns:
-- `hasDeleted`
+- `hasDeleted` - Boolean for if the Destination List was deleted
 
 ---
 
-## CiscoUmbrella.getDestinations(organizationID, destinationListID, page, limit)
+## CiscoUmbrella.getDestinations(organizationID, destinationListID, page?, limit?)
 
 `CiscoUmbrella.getDestinations` is a class function that gets destinations from a specific list.
 
 ### Arguments:
-- `organizationID`
-- `destinationListID`
-- `page`
-- `limit`
+- `organizationID` - Organization ID where the Destination List was created
+- `destinationListID` - ID of the Destination List created to get details from
+- `page?` - Optional parameter for querying page for Destinations
+- `limit?` - Optional parameter for querying limit for Destinations
 
 ### Examples:
 ```js
+const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = { MANAGEMENT: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
 const organizationID = ''
 const destinationListID = ''
-const page = 1 || null
-const limit = 100 || null
+const page = 1 || undefined
+const limit = 100 || undefined
 
 const Destinations = await CiscoUmbrella.getDestinations(organizationID, destinationListID)
 ```
 
 ### Returns:
-- `status`
-    - `status.code`
-    - `status.text`
-- `meta`
-    - `meta.page`
-    - `meta.limit`
-    - `meta.total`
-- `data`
-    - `data[].id`
-    - `data[].comment`
-    - `data[].createdAt`
-    - `data[].destination`
-    - `data[].type`
+- `Destinations` - Object with information of Destinations Request
+    - `Destinations.status` - Object containing information of HTTP Request
+        - `status.code` - Code of HTTP Request (200 if successul)
+        - `status.text` - Text form HTTP REquest
+    - `Destinations.meta`- Object containing pagination information for Destinations
+        - `meta.page` - Current page Destinations were acquired from
+        - `meta.limit` - Current limit of Destination that were acquired
+        - `meta.total` - Total number of Destinations
+    - `Destinations.data` - Array of Objects containing information on Destinations
+        - `data[].id` - ID of Destination in Destination List
+        - `data[].comment` - Comment acquainted with destination when created
+        - `data[].createdAt` - Unix timestamp of when Destination was created
+        - `data[].destination` - Destination in Destination List
+        - `data[].type` - Type of Destination in Destination List
 
 ---
 
@@ -445,14 +479,16 @@ const Destinations = await CiscoUmbrella.getDestinations(organizationID, destina
 `CiscoUmbrella.addDestinations` is a class function that adds destnations to a specific list.
 
 ### Arguments:
-- `organizationID`
-- `destinationListID`
-- `destinations`
-    - `destinations[].comment`
-    - `destinations[].destination`
+- `organizationID` - Organization ID where the Destination List was created
+- `destinationListID` - ID of the Destination List created to add Destinations to
+- `destinations` - New Destinations to be added to Destination List
+    - `destinations[].comment` - Comment for domain to be added
+    - `destinations[].destination` - New URL/domain/ip address to be added
 
 ### Examples
 ```js
+const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = { MANAGEMENT: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
@@ -470,27 +506,27 @@ const newDestinations = CiscoUmbrella.addDestinations(organizationID, destinatio
 ```
 
 ### Returns:
-- `newDestinations`
-    - `newDestinations.data`
-        - `data.access`
-        - `data.bundleTypeId`
-        - `data.createdAt`
-        - `data.id`
-        - `data.isGlobal`
-        - `data.isMspDefault`
-        - `data.markedForDeletion`
-        - `data.modifiedAt`
-        - `data.name`
-        - `data.organizationId`
-        - `data.thirdpartyCategoryId`
-        - `data.meta`
-            - `meta.destinationCount`
-            - `meta.domainCount`
-            - `meta.ipv4Count`
-            - `meta.urlCount`
-    - `newDestinations.status`
-        - `status.code`
-        - `status.text`
+- `newDestinations` - Object with information of Destinations Request
+    - `newDestinations.data` - Object with information of Destination List
+        - `data.access` - Type of access for Destination List (allow or block)
+        - `data.bundleTypeId` - ID corresponding to the type of policy associated with list. 1 for DnsPolicy and 2 for Web Policy.
+        - `data.createdAt` - Unix timestamp that Destination List was created
+        - `data.id` - ID of Destination List
+        - `data.isGlobal` - Boolean for if list is global or organizational
+        - `data.modifiedAt` - Unix timestamp that Destination List was modified
+        - `data.name` - Name of Destination List
+        - `data.organizationId` - Organization ID that Destination List belongs to
+        - `data.thirdpartyCategoryId` - Third party Category ID for Destination List
+        - `data.isMspDefault` - Boolean for if Destination List is managed by service provider (MSP)
+        - `data.makedForDeletion` - Boolean for if Destination List is to be deleted
+        - `data.meta` - Object containing information on Destination List
+            - `meta.destinationCount` - Count of total destinations in Destination List
+            - `meta.domainCount` - Count of domains in Destination List 
+            - `meta.ipv4Count` - Count of Ip addresses in Destination List
+            - `meta.urlCount` - Count fo urls in Destination List
+    - `newDestinations.status`- Object containing information of HTTP Request
+        - `status.code` - Code of HTTP Request (200 if successul)
+        - `status.text` - Text form HTTP REquest
 
 ---
 
@@ -499,13 +535,15 @@ const newDestinations = CiscoUmbrella.addDestinations(organizationID, destinatio
 `CiscoUmbrella.deleteDestinations` is a class function that deletes a series of destinations from a list.
 
 ### Arguments:
-- `organizationID`
-- `destinationListID`
-- `destinations`
-    - `destinations[].destinationID`
+- `organizationID` - Organization ID where the Destination List was created
+- `destinationListID` - ID of the Destination List to delete destination from
+- `destinations` - Array of Objects of destinations to be deleted
+    - `destinations[].destinationID` - Destination ID to delete from Destination List
 
 ### Examples:
 ```js
+const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = { MANAGEMENT: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
@@ -519,27 +557,27 @@ const updatedList = CiscoUmbrella.deleteDestinations(organizationID, destination
 ```
 
 ### Returns:
-- `updatedList`
-    - `updatedList.status`
-        - `status.code`
-        - `status.text`
+- `updatedList` - Object with information of delete Destinations request.
+    - `updatedList.status` - Object containing information of HTTP Request
+        - `status.code` - Code of HTTP Request (200 if successul)
+        - `status.text` - Text form HTTP REquest
     - `updatedList.data`
-        - `data.access`
-        - `data.bundleTypeId`
-        - `data.createdAt`
-        - `data.id`
-        - `data.isGlobal`
-        - `data.isMspDefault`
-        - `data.markedForDeletion`
-        - `data.modifiedAt`
-        - `data.name`
-        - `data.organizationId`
-        - `data.thirdpartyCategoryId`
-        - `data.meta`
-            - `meta.destinationCount`
-            - `meta.domainCount`
-            - `meta.ipv4Count`
-            - `meta.urlCount`
+        - `data.access` - Type of access for Destination List (allow or block)
+        - `data.bundleTypeId` - ID corresponding to the type of policy associated with list. 1 for DnsPolicy and 2 for Web Policy.
+        - `data.createdAt` - Unix timestamp that Destination List was created
+        - `data.id` - ID of Destination List
+        - `data.isGlobal` - Boolean for if list is global or organizational
+        - `data.modifiedAt` - Unix timestamp that Destination List was modified
+        - `data.name` - Name of Destination List
+        - `data.organizationId` - Organization ID that Destination List belongs to
+        - `data.thirdpartyCategoryId` - Third party Category ID for Destination List
+        - `data.isMspDefault` - Boolean for if Destination List is managed by service provider (MSP)
+        - `data.makedForDeletion` - Boolean for if Destination List is to be deleted
+        - `data.meta` - Object containing information on Destination List
+            - `meta.destinationCount` - Count of total destinations in Destination List
+            - `meta.domainCount` - Count of domains in Destination List 
+            - `meta.ipv4Count` - Count of Ip addresses in Destination List
+            - `meta.urlCount` - Count fo urls in Destination List
 
 ---
 
@@ -549,6 +587,8 @@ const updatedList = CiscoUmbrella.deleteDestinations(organizationID, destination
 
 ### Examples:
 ```js
+const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
+
 const config = { NETWORKING: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
@@ -556,6 +596,6 @@ const Organizations = CiscoUmbrella.getOrganizations()
 ```
 
 ### Returns:
-- `Organizations`
-    - `Organizations[].organizationId`
-    - `Organizations[].name`
+- `Organizations` - Object with Organizations acquired from Cisco Umbrella.
+    - `Organizations[].organizationId` - ID of organization found in Cisco Umbrella
+    - `Organizations[].name` - Name of organization found in Cisco Umbrella

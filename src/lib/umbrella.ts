@@ -37,14 +37,15 @@ class UmbrellaClient {
   };
 
   /* <========= Start of: Enforcement =========> */
-  getEnforcementDomains = () => Enforcement.getEnforcementDomains(this.config);
+  getEnforcementDomains = (page = 1, limit = 100) =>
+    Enforcement.getEnforcementDomains(this.config, page, limit);
   addEnforcementDomains = (domains: IEnforcementDomain[], providerName?: string, deviceVersion?: string) =>
     Enforcement.addEnforcementDomains(this.config, domains, providerName, deviceVersion);
 
   deleteEnforcementDomain = (domainID: string | number) => Enforcement.deleteEnforcementDomain(this.config, domainID);
 
-  getDestinationLists = (organizationID: string | number) =>
-    DestinationLists.getDestinationLists(this.config, organizationID);
+  getDestinationLists = (organizationID: string | number, page = 1, limit = 100) =>
+    DestinationLists.getDestinationLists(this.config, organizationID, page, limit);
 
   getDestinationListDetails = (organizationID: string | number, destinationListID: string | number) =>
     DestinationLists.getDestinationListDetails(this.config, organizationID, destinationListID);

@@ -24,17 +24,38 @@ This package compromises a TypeScript library meant for interacting with Cisco U
 To install type the following:
 ```shell
 npm i @jweb-development/cisco-umbrella
+yarn add @jweb-development/cisco-umbrella
 ```
 
 ## Use Case
-In order to integrate our current API with Cisco Umbrella's API, we had to design a library capable of managing the integration. To achieve this, the package takes data acquired from our api 
+In order to integrate our current API with Cisco Umbrella's API, we had to design a library capable of managing the integration. To achieve this, the package takes data acquired from our api to be processed by Cisco Umbrella's API. This package currently supports API integration with `Enforcement`, `Destination Lists`, `Destinations`, and `Organizations`.
 
 ## Documentation
-- [API](/docs/api.md)
-- [Examples](/docs/examples.md)
-- [FAQ](/docs/faq.md)
+- ### [API](/docs/api.md)
+<!-- - [Examples](/docs/examples.md) -->
+<!-- - [FAQ](/docs/faq.md) -->
 
-## Contributors
+## Contributing
+
+### Development
+
+To run a development copy of @jweb-development/cisco-umbrella, type the following:
+
+```bash
+# First we clone the repository
+git clone https://github.com/jweb-development/cisco-umbrella.git
+cd cisco-umbrella
+
+# Then we install the dependencies
+npm install
+
+# Then we build the package
+npm run build
+```
+
+This will output the files into the `dist` directory.
+
+### Contributors
 <a href="https://github.com/jweb-development/cisco-umbrella/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=jweb-development/cisco-umbrella&max=2" />
+  <img src="https://contrib.rocks/image?repo=jweb-development/cisco-umbrella" />
 </a>
