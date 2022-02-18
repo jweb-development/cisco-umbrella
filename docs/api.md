@@ -396,7 +396,7 @@ const organizationID = ''
 const destinationListID = ''
 const destinationListInfo = { name: '' }
 
-const data = await CiscoUmbrella.patchDestinationList(organizationID, destinationListID, destinationListInfo)
+const updatedDestinationList = await CiscoUmbrella.patchDestinationList(organizationID, destinationListID, destinationListInfo)
 ```
 
 ### Returns:
