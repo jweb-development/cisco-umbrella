@@ -5,12 +5,12 @@
     - [CiscoUmbrella.initiateUmbrella](#ciscoumbrellaintiateumbrellaconfig)
 
 - Enforcement
-    - [CiscoUmbrella.getEnforcementDomains](#ciscoumbrellagetenforcementdomains-promise)
+    - [CiscoUmbrella.getEnforcementDomains](#ciscoumbrellagetenforcementdomainspage-limit-promise)
     - [CiscoUmbrella.addEnforcementDomains](#ciscoumbrellaaddenforcementdomainsdomains-providername-deviceversion-promise)
     - [CiscoUmbrella.deleteEnforcementDomain](#ciscoumbrelladeleteenforcementdomaindomainid-promise)
 
 - Destination Lists
-    - [CiscoUmbrella.getDestinationLists](#ciscoumbrellagetdestinationlistsorganizationid-promise)
+    - [CiscoUmbrella.getDestinationLists](#ciscoumbrellagetdestinationlistsorganizationid-page-limit-promise)
     - [CiscoUmbrella.getDestinationListDetails](#ciscoumbrellagetdestinationlistdetailsorganizationid-destinationlistid-promise)
     - [CiscoUmbrella.addDestinationList](#ciscoumbrellaadddestinationlistorganizationid-destinationlistinfo-promise)
     - [CiscoUmbrella.patchDestinationList](#ciscoumbrellapatchdestinationlistorganizationid-destinationlistid-destinationlistinfo-promise)
@@ -64,6 +64,8 @@ const CiscoUmbrella = new UmbrellaClient(config)
 ### Returns:
 - `CiscoUmbrella` - class that allows the access of functions for Enforcement, Destination Lists, Destinations, and Organizaiton calls for Cisco Umbrella
 
+## [Back To Top](#api)
+
 ---
 
 ## CiscoUmbrella.intiateUmbrella(config):
@@ -103,6 +105,8 @@ const config = {
 CiscoUmbrella.initiateUmbrella(config)
 ```
 
+## [Back To Top](#api)
+
 ---
 
 ## CiscoUmbrella.getEnforcementDomains(page?, limit?): Promise
@@ -137,6 +141,8 @@ const { data, meta } = EnforcementDomains
     - `meta.limit` - Limit of how many Enforcement domains were acquired
     - `meta.prev` - Boolean if previous pages exist
     - `meta.next` - Boolean if more pages exist
+
+## [Back To Top](#api)
 
 ---
 
@@ -179,6 +185,8 @@ const newDomains = await CiscoUmbrella.addEnforcementDomains(domains, providerNa
 - `newDomains` - Array of IDs added to enforcement
     - `newDomains[].id` - ID of new domain added
 
+## [Back To Top](#api)
+
 ---
 ## CiscoUmbrella.deleteEnforcementDomain(domainID): Promise
 
@@ -201,6 +209,8 @@ const hasDeleted = await CiscoUmbrella.deleteEnforcementDomain(domainID)
 
 ### Returns:
 - `hasDeleted` - Returns true if domain was deleted
+
+## [Back To Top](#api)
 
 ---
 
@@ -251,6 +261,7 @@ const DestinationLists = await CiscoUmbrella.getDestinationLists(organizationID)
             - `meta.ipv4Count` - Count of Ip addresses in Destination List
             - `meta.urlCount` - Count fo urls in Destination List
 
+## [Back To Top](#api)
 
 ---
 
@@ -297,6 +308,8 @@ const DestinationListDetails = await CiscoUmbrella.getDestinationListDetails(org
     - `DestinationListDetails.status` - Object containing information of HTTP Request
         - `status.code` - Code of HTTP Request (200 if successul)
         - `status.text` - Text form HTTP REquest
+
+## [Back To Top](#api)
 
 ---
 
@@ -358,6 +371,8 @@ const newDestinationList = await CiscoUmbrella.addDestinationList(organizationID
         - `meta.ipv4Count` - Count of Ip addresses in Destination List
         - `meta.urlCount` - Count fo urls in Destination List
 
+## [Back To Top](#api)
+
 --- 
 
 ## CiscoUmbrella.patchDestinationList(organizationID, destinationListID, destinationListInfo): Promise
@@ -403,6 +418,8 @@ const data = await CiscoUmbrella.patchDestinationList(organizationID, destinatio
         - `meta.ipv4Count` - Count of Ip addresses in Destination List
         - `meta.urlCount` - Count fo urls in Destination List
 
+## [Back To Top](#api)
+
 --- 
 
 ## CiscoUmbrella.deleteDestinationList(organizationID, destinationListID): Promise
@@ -428,6 +445,8 @@ const hasDeleted = await CiscoUmbrella.deleteDestinationList(organizationID, des
 
 ### Returns:
 - `hasDeleted` - Boolean for if the Destination List was deleted
+
+## [Back To Top](#api)
 
 ---
 
@@ -471,6 +490,8 @@ const Destinations = await CiscoUmbrella.getDestinations(organizationID, destina
         - `data[].createdAt` - Unix timestamp of when Destination was created
         - `data[].destination` - Destination in Destination List
         - `data[].type` - Type of Destination in Destination List
+
+## [Back To Top](#api)
 
 ---
 
@@ -528,6 +549,8 @@ const newDestinations = CiscoUmbrella.addDestinations(organizationID, destinatio
         - `status.code` - Code of HTTP Request (200 if successul)
         - `status.text` - Text form HTTP REquest
 
+## [Back To Top](#api)
+
 ---
 
 ## CiscoUmbrella.deleteDestinations(organizationID, destinationListID, destinations): Promise
@@ -578,6 +601,8 @@ const updatedList = CiscoUmbrella.deleteDestinations(organizationID, destination
             - `meta.domainCount` - Count of domains in Destination List 
             - `meta.ipv4Count` - Count of Ip addresses in Destination List
             - `meta.urlCount` - Count fo urls in Destination List
+
+## [Back To Top](#api)
 
 ---
 
