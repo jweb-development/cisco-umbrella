@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { parseResponse } from '@jweb-development/response-parser';
+import { parseResponse, responseTypes } from '@jweb-development/response-parser';
 import { CISCO_API } from '../config';
 import { getDestinationType } from '../utils';
 
@@ -39,7 +39,7 @@ const getDestinationLists: IGetDestinationLists = async (config, organizationID,
         username: mgmtKey,
         password: mgmtSecret,
       },
-      params:{
+      params: {
         page: page || 1,
         limit: limit || 100
       }
@@ -48,14 +48,21 @@ const getDestinationLists: IGetDestinationLists = async (config, organizationID,
     const response = await axios.request(options);
     const parsedResponse = parseResponse(response);
 
-    if (parsedResponse && !parsedResponse.error) {
+    if (parsedResponse && parsedResponse.type === responseTypes.SUCCESS) {
       const {
         status,
         meta,
         data = [],
       }: { status: IDestinationListsStatus; meta: IDestinationListsMeta; data: ICiscoList[] } = response.data;
 
-      return { status, meta, data };
+      return { isVerified: true, status, meta, data };
+    } else if (
+      parsedResponse && (
+        parsedResponse.type === responseTypes.UNAUTHORIZED || parsedResponse.type === responseTypes.FORBIDDEN ||
+        parsedResponse.type === responseTypes.NOT_FOUND
+      )
+    ) {
+      return { isVerified: false, type: parsedResponse.type }
     }
 
     throw new Error('Failed to acquire destination lists.');
