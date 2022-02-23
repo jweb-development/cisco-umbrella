@@ -523,7 +523,7 @@ const destinations = [
     }
 ]
 
-const newDestinations = CiscoUmbrella.addDestinations(organizationID, destinationListID, destinations)
+const newDestinations = await CiscoUmbrella.addDestinations(organizationID, destinationListID, destinations)
 ```
 
 ### Returns:
@@ -576,7 +576,7 @@ const destinationListID = ''
 const destinationID = 0
 const destinations = [destinationID, ...]
 
-const updatedList = CiscoUmbrella.deleteDestinations(organizationID, destinationListID, destinations)
+const updatedList = await CiscoUmbrella.deleteDestinations(organizationID, destinationListID, destinations)
 ```
 
 ### Returns:
@@ -617,7 +617,7 @@ const { UmbrellaClient } = require('@jweb-development/cisco-umbrella')
 const config = { NETWORKING: { key: '', secret: '' } }
 const CiscoUmbrella = new UmbrellaClient(config)
 
-const Organizations = CiscoUmbrella.getOrganizations()
+const Organizations = await CiscoUmbrella.getOrganizations()
 ```
 
 ### Returns:
