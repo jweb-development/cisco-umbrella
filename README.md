@@ -32,7 +32,7 @@ In order to integrate our current API with Cisco Umbrella's API, we had to desig
 
 ## Documentation
 - ### [API](/docs/api.md)
-<!-- - [Examples](/docs/examples.md) -->
+- ### [Examples](/docs/examples.md)
 <!-- - [FAQ](/docs/faq.md) -->
 
 ## Contributing
