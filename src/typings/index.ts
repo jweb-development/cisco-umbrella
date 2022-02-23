@@ -26,20 +26,13 @@ import { ICiscoOrganization } from './organizations';
 
 /* <========= Start of: Enforcement =========> */
 interface IGetEnforcementDomains {
-  (
-    config: IUmbrellaConfig,
-    page?: number,
-    limit?: number
-  ): Promise<IEnforcementDomainPromise>;
+  (config: IUmbrellaConfig, page?: number, limit?: number): Promise<IEnforcementDomainPromise>;
 }
 
 interface ISubmitEnforcementDomains {
-  (
-    config: IUmbrellaConfig,
-    domains: IEnforcementDomain[],
-    providerName?: string,
-    deviceVersion?: string
-  ): Promise<{ id: number; }[]>;
+  (config: IUmbrellaConfig, domains: IEnforcementDomain[], providerName?: string, deviceVersion?: string): Promise<
+    { id: number }[]
+  >;
 }
 
 interface IDeleteEnforcementDomains {
