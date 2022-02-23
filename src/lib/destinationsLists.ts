@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { parseResponse, responseTypes } from '@jweb-development/response-parser';
+import { parseResponse } from '@jweb-development/response-parser';
 import { CISCO_API } from '../config';
 import { getDestinationType } from '../utils';
 
@@ -48,7 +48,7 @@ const getDestinationLists: IGetDestinationLists = async (config, organizationID,
     const response = await axios.request(options);
     const parsedResponse = parseResponse(response);
 
-    if (parsedResponse && parsedResponse.type === responseTypes.SUCCESS) {
+    if (parsedResponse && !parsedResponse.error) {
       const {
         status,
         meta,
