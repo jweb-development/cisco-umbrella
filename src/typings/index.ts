@@ -42,7 +42,12 @@ interface IDeleteEnforcementDomains {
 
 /* <========= Start of: Destination Lists =========> */
 interface IGetDestinationLists {
-  (config: IUmbrellaConfig, organizationID: string | number, page?: number, limit?: number): Promise<ICiscoListPromise>;
+  (
+    config: IUmbrellaConfig,
+    organizationID: string | number,
+    page?: number,
+    limit?: number
+  ): Promise<ICiscoListPromise>;
 }
 
 interface ISubmitDestinationList {
