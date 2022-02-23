@@ -55,14 +55,7 @@ const getDestinationLists: IGetDestinationLists = async (config, organizationID,
         data = [],
       }: { status: IDestinationListsStatus; meta: IDestinationListsMeta; data: ICiscoList[] } = response.data;
 
-      return { isVerified: true, status, meta, data };
-    } else if (
-      parsedResponse && (
-        parsedResponse.type === responseTypes.UNAUTHORIZED || parsedResponse.type === responseTypes.FORBIDDEN ||
-        parsedResponse.type === responseTypes.NOT_FOUND
-      )
-    ) {
-      return { isVerified: false, type: parsedResponse.type }
+      return { status, meta, data };
     }
 
     throw new Error('Failed to acquire destination lists.');

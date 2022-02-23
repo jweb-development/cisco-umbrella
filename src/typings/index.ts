@@ -41,16 +41,13 @@ interface IDeleteEnforcementDomains {
 /* <========= End of: Enforcement =========> */
 
 /* <========= Start of: Destination Lists =========> */
-interface IDestinationListPromise extends ICiscoListPromise { 
-  isVerified: boolean;
- }
 interface IGetDestinationLists {
   (
     config: IUmbrellaConfig,
     organizationID: string | number,
     page?: number,
     limit?: number
-  ): Promise<IDestinationListPromise | { isVerified: boolean; type: string; }>;
+  ): Promise<ICiscoListPromise>;
 }
 
 interface ISubmitDestinationList {
