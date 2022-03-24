@@ -258,8 +258,8 @@ const deleteDestinationList: IDeleteDestinationList = async (config, organizatio
     const response = await axios.request(options);
     const parsedResponse = parseResponse(response);
 
-    if (parsedResponse && !parsedResponse.error) {
-      return Array.isArray(response.data);
+    if (parsedResponse && !parsedResponse.error && response.data && response.data.data) {
+      return Array.isArray(response.data.data);
     }
 
     throw new Error('Failed to delete destination list.');

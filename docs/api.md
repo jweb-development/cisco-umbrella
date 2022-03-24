@@ -320,7 +320,10 @@ const DestinationListDetails = await CiscoUmbrella.getDestinationListDetails(org
 ### Arguments:
 - `organizationID` - Organization ID where the Destination List was created
 - `destinationListInfo` - Object with information for creating a new Destination List
+    - `destinationListInfo.access` - String for declaring if list should allow or block destinations
     - `destinationListInfo.isDnsPolicy` - Boolean for if new Destination List should have a Umbrella DNS policy
+    - `destinationListInfo.isGlobal` - Boolean for if new Destination List should apply at a global level
+    - `destinationListInfo.name` - Name for new Destination List
     - `destinationListInfo.destinations` -  Array of new Destinations to be added with Destination List.
         - `destinations[].comment` - Comment for domain to be added
         - `destinations[].destination` - New URL/domain/ip address to be added

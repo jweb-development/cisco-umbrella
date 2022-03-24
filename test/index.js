@@ -146,6 +146,19 @@ const testDestinationListPatch = async (organizationID, destinationListID) => {
   }
 }
 
+const testDestinationListDelete = async (organizationID, destinationListID) => {
+  try {
+    if (!organizationID) { console.error('organization id not found'); return false }
+    if (!destinationListID) { console.error('destination list id not found'); return false }
+
+    const CiscoListDelete = await CiscoUmbrella.deleteDestinationList(organizationID, destinationListID)
+    console.log(CiscoListDelete)
+  } catch (err) {
+    console.error(err)
+    return false
+  }
+}
+
 const testDestinationsGet = async (orgID, destinationListID) => {
   try {
     let organizationID = orgID
